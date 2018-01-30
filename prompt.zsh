@@ -61,13 +61,11 @@ prompt_init() {
   zstyle ':vcs_info:git*' formats ' %b'
   zstyle ':vcs_info:git*' actionformats ' %b (%a)'
 
-  # show username@host if logged in through SSH
-  # if [[ -n $SSH_CONNECTION ]]; then
+  # Show username if it's not who I expect it to be
   prompt_username='%m '
   if [[ $(whoami) != malbertsson ]]; then
     prompt_username="%n@$prompt_username"
   fi
-  # fi
 
   RPROMPT='%F{blue}%~%F{magenta}${vcs_info_msg_0_}$(prompt_git_dirty)%f'
   PROMPT='%F{blue}${prompt_username}%f${PROMPT_SYMBOL:-$ } '
