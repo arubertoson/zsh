@@ -15,6 +15,7 @@ export ZGEN_DIR="$XDG_CACHE_HOME/zgen"
 export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 
 export REZ_CONFIG_FILE="${HOME}/.rez/rezconfig.py"
+export REZ_REPO_PAYLOAD_DIR="/scratch/.rez/downloads"
 
 # export PATH="/opt/miniconda/miniconda2/bin/:/opt/miniconda/miniconda3/bin/:{$PATH}"
 [[ ":$PATH:" != *":${XDG_BIN_HOME}:"* ]] && PATH="${XDG_BIN_HOME}:${PATH}"
