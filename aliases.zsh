@@ -1,6 +1,7 @@
 autoload -U zmv
 
 zman() { PAGER="less -g -s '+/^       "$1"'" man zshall; }
+rgf() { rg -g "${@:1}" --files }
 
 alias ppath='echo $PATH | tr ":" "\n"'
 
