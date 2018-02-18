@@ -33,9 +33,7 @@ source "${ZDOTDIR}/aliases.zsh"
 eval "$(dircolors ${ZDOTDIR}/.dircolors)"
 
 # python
-export PYTHONPATH="$PYTHONPATH:$HOME/python-dev/extras/python/autodesk/"
-export PATH="$HOME/.pyenv/bin:$PATH"
-export PYENV_ROOT="$HOME/.pyenv/"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-source ~/z.sh
+if [ -x $(command -v pyenv) ]; then
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+fi
