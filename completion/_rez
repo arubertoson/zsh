@@ -1,5 +1,6 @@
 #compdef rez
 
+
 _commands=(
   "bind:Create a Rez package for existing software." \
   "build:Build a package from source." \
@@ -25,16 +26,21 @@ _commands=(
   "gui:Run the Rez GUI application." \
 )
 
+
 _rez_commands() {
   local -a commands
+
   _describe 'commands' _commands
 }
 
+
 _rez_packages() {
   local -a packages
+
   packages=($(rez search 2> /dev/null))
   _describe 'packages' packages
 }
+
 
 _rez_bind() {
   local -a packages
@@ -87,8 +93,10 @@ _rez_build() {
     esac
 }
 
+
 _rez_config() {
   local -a patterns
+
   _arguments \
     '-h, --help'{-h,--help}'[show this help message and exit]' \
     '--search-list[list the config files searched]' \
@@ -102,12 +110,10 @@ _rez_config() {
       _describe 'fields' patterns
     ;;
   esac
-
 }
-_rez() {
-  local context state state_descr line
-  typeset -A opt_args
 
+
+_rez() {
   _arguments \
     '(-h, --help)'{-h,--help}'[show this help message and exit]' \
     '(-i, --info)'{-i,--info}'[print information about rez and exit]' \
