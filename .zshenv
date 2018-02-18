@@ -55,7 +55,7 @@ _is_env_member ${_CMAKE} ${PATH} && PATH="${_CMAKE}:${PATH}"
 # Finalize path
 export PATH
 
-# fpath=(${ZDOTDIR}/completion $fpath)
+fpath=(${ZDOTDIR}/completion $fpath)
 
 #
 # Environment variables
