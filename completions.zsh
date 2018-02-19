@@ -3,6 +3,7 @@
 # ----------------------------------------------------------------------------
 # Completion Option
 # ----------------------------------------------------------------------------
+
 setopt COMPLETE_IN_WORD    # Complete from both ends of a word.
 setopt PATH_DIRS           # Perform path search even on command names with slashes.
 setopt AUTO_MENU           # Show completion menu on a successive tab press.
@@ -14,6 +15,9 @@ unsetopt MENU_COMPLETE     # Do not autoselect the first completion entry.
 unsetopt COMPLETE_ALIASES  # Completion for aliases
 unsetopt ALWAYS_TO_END     # Move cursor to the end of a completed word.
 unsetopt CASE_GLOB
+
+# Add custom completions
+fpath=(${ZDOTDIR}/completion $fpath)
 
 # ----------------------------------------------------------------------------
 # Completion Styles

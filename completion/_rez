@@ -1,0 +1,146 @@
+#compdef rez
+
+
+_commands=(
+  "bind:Create a Rez package for existing software." \
+  "build:Build a package from source." \
+  "config:Print current rez settings." \
+  "context:Print information about the current rez context, or a given context file." \
+  "depends:Perform a reverse package dependency lookup." \
+  "env:Open a rez-configured shell, possibly interactive." \
+  "help:Utility for displaying help for the given package." \
+  "interpret:Execute some Rex code and print the interpreted result." \
+  "python:Start a python interpreter or execute a python script within Rez's own execution context." \
+  "plugins:Get a list of a package's plugins." \
+  "pip:Install a pip-compatible python package, and its dependencies, as rez packages." \
+  "release:Build a package from source and deploy it." \
+  "search:Search for packages." \
+  "test:Run tests listed in a package's definition file." \
+  "view:View the contents of a package." \
+  "status:Report current status of the environment, or a tool or package etc." \
+  "suite:Manage a suite or print information about an existing suite." \
+  "memcache:Manage and query memcache server(s)." \
+  "selftest:Run unit tests." \
+  "yaml2py:Print a package.yaml file in package.py format." \
+  "diff:Compare the source code of two packages." \
+  "gui:Run the Rez GUI application." \
+)
+
+
+_rez_commands() {
+  local -a commands
+
+  _describe 'commands' _commands
+}
+
+
+_rez_packages() {
+  local -a packages
+
+  packages=($(rez search 2> /dev/null))
+  _describe 'packages' packages
+}
+
+
+_rez_bind() {
+  local -a packages
+
+  _arguments \
+    '(-h, --help)'{-h,--help}'[show this help message and exit]' \
+    '--quickstart[bind a set of standard packages to get started]' \
+    '(-r, --release)'{-r,--release}'[install to release path; overrides -i]' \
+    '(-i, --install-path)'{-i,--install-path}'[install path, defaults to local package path]' \
+    '--no-deps[Do not bind dependencies]' \
+    '(-l, --list)'{-l,--list}'[list all available bind modules]' \
+    '(-s, --search)'{-s,--search}'[for the bind module but do not perform the bind]' \
+    '(-v, --verbose)'{-v,--verbose}'[mode, repeat for more verbosity]' \
+    '1: :->packages'
+
+  case "$state" in
+    (packages)
+      packages=($(rez bind --list 2> /dev/null | 
+        sed 1,2d |  # Remove first two lines
+        sed -e "s/[[:space:]]\+/:/g")) # Replace row of spaces with :
+      _describe 'packages' packages
+    ;;
+  esac
+}
+
+
+_rez_build() {
+
+  _arguments \
+    '(-h, --help)'{-h,--help}'[show this help message and exit]' \
+    '(-c, --clean)'{-c,--clean}'[clear the current build before rebuilding.]' \
+    '(-i, --install)'{-i,--install}'[install the build to the local packages path. Use --prefix to choose a custom install path.]' \
+    '(-p, --prefix)'{-p,--prefix}'[install to a custom path.]: :->prefix' \
+    '--fail-graph[if the build environment fails to resolve due to a conflict, display the resolve graph as an image.]' \
+    '(-s, --scripts)'{-s,--scripts}'[create build scripts rather than performing the full build. Running these scripts will place you into a build environment, where you can invoke the build system directly.]' \
+    '--view-pre[just view the preprocessed package definition, and exit.]' \
+    '--process[the build process to use (default: local).]: :->process' \
+    '(-v, --verbose)'{-v,--verbose}'[verbose mode, repeat for more verbosity]' \
+    '--variants[select variants to build (zero-indexed).]' \
+    '--ba, --build-args'{--ba,--build-args}'[arguments to pass to the build system. Alternatibely, list these after a "--"]' \
+    '--cba, --child-build-args'{--cba,--child-build-args}'[arguments to pass to the child build system, if any. Alternatibely, list these after a second "--".]'
+
+    case "$state" in
+      (prefix)
+        _path_files -/
+      ;;
+      (process)
+        _describe 'process' "(remote local)"
+      ;;
+    esac
+}
+
+
+_rez_config() {
+  local -a patterns
+
+  _arguments \
+    '-h, --help'{-h,--help}'[show this help message and exit]' \
+    '--search-list[list the config files searched]' \
+    '--source-list[list the config files sourced]' \
+    '-v, --verbose'{-v, --verbose}'[verbose mode, repeat for more verbosity]' \
+    '1: :->fields'
+
+  case "$state" in
+    (fields)
+      patterns=($(rez config | grep '^\w' | sed -e 's/[:].*$//g'))
+      _describe 'fields' patterns
+    ;;
+  esac
+}
+
+
+_rez() {
+  _arguments \
+    '(-h, --help)'{-h,--help}'[show this help message and exit]' \
+    '(-i, --info)'{-i,--info}'[print information about rez and exit]' \
+    '(-V, --version)'{-V,--version}'[show programs version number and exit]' \
+    '(-v, --verbose)'{-v,--verbose}'[verbose mode, repeat for more verbosity]' \
+    '1: :_rez_commands' \
+    '*:: :->commands'
+
+  case $state in
+    (commands)
+      case $words[1] in
+        (bind)
+          _rez_bind
+        ;;
+        (build)
+          _rez_build
+        ;;
+        (config)
+          _rez_config
+        ;;
+        (env|view)
+          _rez_packages
+        ;;
+      esac
+    ;;
+  esac
+}
+
+
+_rez "$@"
