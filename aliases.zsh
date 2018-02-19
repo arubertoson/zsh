@@ -2,8 +2,8 @@ autoload -U zmv
 
 zman() { PAGER="less -g -s '+/^       "$1"'" man zshall; }
 rgf() { rg -g "${@:1}" --files }
-
-alias ppath='echo $PATH | tr ":" "\n"'
+zrez() { rez "${@:1}" -- zsh }
+penv() { printenv "$1" | tr ":" "\n" }
 
 # dotfiles
 alias dots='git --git-dir=$HOME/.dots --work-tree=$HOME'
