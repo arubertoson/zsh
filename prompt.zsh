@@ -29,6 +29,11 @@ prompt_hook_precmd() {
   [[ -n $PROMPT_DONE ]] && print ""; PROMPT_DONE=1
 }
 
+## Depth ###############################
+prompt_hook_depth() {
+
+}
+
 ## Initialization ######################
 prompt_init() {
   # prevent the extra space in the rprompt
@@ -46,8 +51,14 @@ prompt_init() {
   # Updates cursor shape and prompt symbol based on vim mode
   zle-keymap-select() {
     case $KEYMAP in
-      vicmd)      PROMPT_SYMBOL="%F{magenta}« " ;;
-      main|viins) PROMPT_SYMBOL="%(?.%F{green}.%F{red})> " ;;
+      (vicmd)      
+        PROMPT_SYMBOL="%F{magenta}« "
+      ;;
+      (main|viins) 
+        # Prompt depth is shown by 
+        prompt_char=$(printf ">%.0s" {1..$SHLVL})
+        PROMPT_SYMBOL="%(?.%F{green}.%F{red})${prompt_char} "
+      ;;
     esac
     zle reset-prompt
     zle -R
@@ -67,8 +78,11 @@ prompt_init() {
     prompt_username="%n@$prompt_username"
   fi
 
+  # Show jobs 
+  prompt_jobs="%F{red}%(1j.*.)"
+
   RPROMPT='%F{blue}%~%F{magenta}${vcs_info_msg_0_}$(prompt_git_dirty)%f'
-  PROMPT='%F{blue}${prompt_username}%f${PROMPT_SYMBOL:-$ } '
+  PROMPT='${prompt_jobs}%F{blue}${prompt_username}%f${PROMPT_SYMBOL:-$ } '
 }
 
 prompt_init "$@"
