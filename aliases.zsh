@@ -5,6 +5,26 @@ rgf() { rg -g "${@:1}" --files }
 zrez() { rez "${@:1}" -- zsh }
 penv() { printenv "$1" | tr ":" "\n" }
 
+# Fzy
+proj() { 
+  projlocs=("${(@f)$(<~/projloc)}")
+  expand=
+  for item in "${projlocs[@]}"; do
+    ppath="$(eval echo ${item})"
+    if [ -d "${ppath}" ]; then
+      if [ -z ${expand} ]; then
+        expand="${ppath}"
+      else
+        expand="${expand} ${ppath}"
+      fi
+    fi
+  done
+  echo "looking in paths: ${expand}"
+  cd $(find "${expand}" -maxdepth 1 -type d | fzy)
+}
+
+n() { FILE=$(find . -type f | fzy) && nvim -u "${HOME}/.vim/vimrc" $FILE }
+
 # dotfiles
 alias dots='git --git-dir=$HOME/.dots --work-tree=$HOME'
 alias dots-ls='dots ls-files'
