@@ -34,7 +34,7 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
 # REZ ------------------------------------------------------------------------
 _REZ="${HOME}/.rez/bin/rez"
-if [ $(_not_in_env ${_REZ} ${PATH}) ]; then
+if [ $(_in_env ${_REZ} ${PATH}) ]; then
   PATH="${_REZ}:${PATH}"
   export REZ_CONFIG_FILE="${HOME}/.rez/rezconfig.py"
   export REZ_REPO_PAYLOAD_DIR="/scratch/.rez/downloads"
@@ -44,7 +44,7 @@ fi
 # PYENV ----------------------------------------------------------------------
 _PYENV="${HOME}/.pyenv/bin"
 if [[ -d "${_PYENV}" ]]; then
-  if [ ! $(_not_in_env "$_PYENV" "${PATH}") ]; then
+  if [ ! $(_in_env "$_PYENV" "${PATH}") ]; then
     export PYENV_ROOT="$HOME/.pyenv/"
     PATH="${PYENV_ROOT}/bin:$PATH"
   fi
@@ -56,13 +56,13 @@ PATH="/opt/miniconda/miniconda2/bin:/opt/miniconda/miniconda3/bin:${PATH}"
 
 # PYENV ----------------------------------------------------------------------
 _NODE_YARN="${HOME}/.yarn/bin"
-_not_in_env ${_NODE_YARN} ${PATH} && PATH="${_NODE_YARN}:${PATH}"
+_in_env ${_NODE_YARN} ${PATH} && PATH="${_NODE_YARN}:${PATH}"
 
 
 # CMAKE ----------------------------------------------------------------------
 # TODO: make correct symlink binding
 _CMAKE='/opt/cmake/bin'
-_not_in_env ${_CMAKE} ${PATH} && PATH="${_CMAKE}:${PATH}"
+_in_env ${_CMAKE} ${PATH} && PATH="${_CMAKE}:${PATH}"
 
 
 # FINALIZE -------------------------------------------------------------------
