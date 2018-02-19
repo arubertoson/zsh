@@ -1,9 +1,8 @@
 #!/usr/bin/env zsh
-# 
-# Defines runtime environment
-#
 
-# source usr environment
+# ----------------------------------------------------------------------------
+# Defines runtime environment
+# ----------------------------------------------------------------------------
 
 export XDG_CACHE_HOME="${HOME}/.cache"
 export XDG_CONFIG_HOME="${HOME}/.config"
@@ -17,16 +16,6 @@ export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 export REZ_CONFIG_FILE="${HOME}/.rez/rezconfig.py"
 export REZ_REPO_PAYLOAD_DIR="/scratch/.rez/downloads"
 
-# export PATH="/opt/miniconda/miniconda2/bin/:/opt/miniconda/miniconda3/bin/:{$PATH}"
-[[ ":$PATH:" != *":${XDG_BIN_HOME}:"* ]] && PATH="${XDG_BIN_HOME}:${PATH}"
-[[ ":$PATH:" != *":${HOME}/.rez/bin/rez:"* ]] && PATH="${HOME}/.rez/bin/rez:${PATH}"
-[[ ":$PATH:" != *":/opt/cmake/bin:"* ]] && PATH="/opt/cmake/bin:${PATH}"
-
-export PATH
-
-#
-# Environment variables
-#
 export SHELL=$(command -v zsh)
 export LANG=${LANG:-en_US.UTF-8}
 export PAGER=less
@@ -38,9 +27,43 @@ export VISUAL=nvim
 export EDITOR="$VISUAL"
 
 
-#
-# Functions
-#
+# ----------------------------------------------------------------------------
+# Setup and build PATH
+# ----------------------------------------------------------------------------
+
+if [[ -z "${REZ_RESOLVE}" ]] ; then
+  [[ ":$PATH:" != *":${XDG_BIN_HOME}:"* ]] && PATH="${XDG_BIN_HOME}:${PATH}"
+  [[ ":$PATH:" != *":${HOME}/.rez/bin/rez:"* ]] && PATH="${HOME}/.rez/bin/rez:${PATH}"
+
+  # Should be moved linked from /usr/local/bin
+  [[ ":$PATH:" != *":/opt/cmake/bin:"* ]] && PATH="/opt/cmake/bin:${PATH}"
+
+  # Miniconda/Pyenv pythonpath for pymel/mayacmds help
+  # TODO: Should be moved to another location as it's only relevant when
+  # developing certain tools.
+  export PYTHONPATH="$PYTHONPATH:$HOME/python-dev/extras/python/autodesk/"
+
+  # We need to set pyenv first as we're only utilizing pipsi and other tools
+  # needing virtualenv to work with pyenv
+  if [[ -d "$HOME/.pyenv" ]]; then
+    export PYENV_ROOT="$HOME/.pyenv/"
+    export PATH="${PYENV_ROOT}/bin:${PATH}"
+    eval "$(pyenv init -)"
+    eval "$(pyenv virtualenv-init -)"
+  fi
+  # Place miniconda python before pyenv after pyenv is done with setup, pyenv 
+  # does it's own thing after init is run
+  PATH="/opt/miniconda/miniconda2/bin:${PATH}"
+  
+  # Export custom PATH
+  export PATH
+fi
+
+
+# ----------------------------------------------------------------------------
+# Custom Functions
+# ----------------------------------------------------------------------------
+
 function _is_callable {
   for cmd in "$@"; do
     command -v "$cmd" >/dev/null || return 1
@@ -65,5 +88,4 @@ function _get_repo {
 function _cache_clear {
   command rm -rfv $XDG_CACHE_HOME/${SHELL##*/}/*;
 }
-
 
