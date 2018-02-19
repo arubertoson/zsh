@@ -1,10 +1,16 @@
+#!/usr/bin/env zsh
+
+# ----------------------------------------------------------------------------
+# Zgen for loading plugins
+# ----------------------------------------------------------------------------
 export ZGEN_AUTOLOAD_COMPINIT=0
 AUTOPAIR_INHIBIT_INIT=1
 
+# Install zgen from repo
 _load_repo tarjoilija/zgen $ZGEN_DIR zgen.zsh
 if ! zgen saved; then
   echo "Creating zgen save"
-  # _cache_clear
+  _cache_clear
 
   zgen load hlissner/zsh-autopair autopair.zsh develop
   zgen load zsh-users/zsh-history-substring-search
@@ -12,30 +18,23 @@ if ! zgen saved; then
   zgen load zsh-users/zsh-completions src
   zgen load junegunn/fzf shell
   zgen load zdharma/fast-syntax-highlighting
+  zgen load rupa/z z.sh
 
   zgen save
 fi
 
-# usr cfg
+# ----------------------------------------------------------------------------
+# Source custom setup scripts
+# ----------------------------------------------------------------------------
 source "${ZDOTDIR}/config.zsh"
 source "${ZDOTDIR}/completions.zsh"
 source "${ZDOTDIR}/keymaps.zsh"
 source "${ZDOTDIR}/prompt.zsh"
 
-#
-autopair-init
-
-# 
-autoload -Uz compinit && compinit -d $ZSH_CACHE/zcompdump
-
-# usr alias
+# All setup outside of above should be done in load.
+source "${ZDOTDIR}/load.zsh"
+# Aliases should be sourced last as it can be overridden by other plugins
+# otherwise
 source "${ZDOTDIR}/aliases.zsh"
-eval "$(dircolors ${ZDOTDIR}/.dircolors)"
 
-# python
-export PYTHONPATH="$PYTHONPATH:$HOME/python-dev/extras/python/autodesk/"
-export PATH="$HOME/.pyenv/bin:$PATH"
-export PYENV_ROOT="$HOME/.pyenv/"
-eval "$(pyenv init -)"
-eval "$(pyenv virtualenv-init -)"
-source ~/z.sh
+
