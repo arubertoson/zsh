@@ -59,18 +59,25 @@ if [[ -d "${_PYENV}" ]]; then
 fi
 # Place miniconda in front of pyenv as we are not really interested in all
 # pyenv has to offer
-PATH="/opt/miniconda/miniconda2/bin:/opt/miniconda/miniconda3/bin:${PATH}"
+_CONDA_ROOT='/opt/miniconda'
+if [[ -d "${_CONDA_ROOT}" ]]; then
+  PATH="/opt/miniconda/miniconda2/bin:/opt/miniconda/miniconda3/bin:${PATH}"
+fi
 
 
 # PYENV ----------------------------------------------------------------------
 _NODE_YARN="${HOME}/.yarn/bin"
-_in_env ${_NODE_YARN} ${PATH} || PATH="${_NODE_YARN}:${PATH}"
+if [[ -d "${_NODE_YARN}" ]]; then
+  _in_env ${_NODE_YARN} ${PATH} || PATH="${_NODE_YARN}:${PATH}"
+fi
 
 
 # CMAKE ----------------------------------------------------------------------
 # TODO: make correct symlink binding
 _CMAKE='/opt/cmake/bin'
-_in_env ${_CMAKE} ${PATH} || PATH="${_CMAKE}:${PATH}"
+if [[ -d "${_CMAKE}" ]]; then
+  _in_env ${_CMAKE} ${PATH} || PATH="${_CMAKE}:${PATH}"
+fi
 
 
 # FINALIZE -------------------------------------------------------------------
