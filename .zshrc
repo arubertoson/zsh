@@ -16,9 +16,10 @@ if ! zgen saved; then
   zgen load zsh-users/zsh-history-substring-search
   zgen load zdharma/history-search-multi-word
   zgen load zsh-users/zsh-completions src
-  zgen load junegunn/fzf shell
   zgen load zdharma/fast-syntax-highlighting
-  zgen load rupa/z z.sh
+  # zgen load junegunn/fzf shell
+  # zgen load rupa/z z.sh
+  zgen load b4b4r07/enhancd init.sh
 
   zgen save
 fi
