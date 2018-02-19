@@ -36,5 +36,3 @@ source "${ZDOTDIR}/load.zsh"
 # Aliases should be sourced last as it can be overridden by other plugins
 # otherwise
 source "${ZDOTDIR}/aliases.zsh"
-
-
