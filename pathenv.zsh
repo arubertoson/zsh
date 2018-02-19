@@ -62,13 +62,13 @@ PATH="/opt/miniconda/miniconda2/bin:/opt/miniconda/miniconda3/bin:${PATH}"
 
 # PYENV ----------------------------------------------------------------------
 _NODE_YARN="${HOME}/.yarn/bin"
-_in_env ${_NODE_YARN} ${PATH} && PATH="${_NODE_YARN}:${PATH}"
+_in_env ${_NODE_YARN} ${PATH} || PATH="${_NODE_YARN}:${PATH}"
 
 
 # CMAKE ----------------------------------------------------------------------
 # TODO: make correct symlink binding
 _CMAKE='/opt/cmake/bin'
-_in_env ${_CMAKE} ${PATH} && PATH="${_CMAKE}:${PATH}"
+_in_env ${_CMAKE} ${PATH} || PATH="${_CMAKE}:${PATH}"
 
 
 # FINALIZE -------------------------------------------------------------------
