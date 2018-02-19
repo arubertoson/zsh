@@ -34,10 +34,12 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
 # REZ ------------------------------------------------------------------------
 _REZ="${HOME}/.rez/bin/rez"
-if [ $(_in_env ${_REZ} ${PATH}) ]; then
+if [ ! $(_in_env ${_REZ} ${PATH}) ]; then
   PATH="${_REZ}:${PATH}"
-  export REZ_CONFIG_FILE="${HOME}/.rez/rezconfig.py"
-  export REZ_REPO_PAYLOAD_DIR="/scratch/.rez/downloads"
+  if [ -x "$(command -v rez)" ]; then
+    export REZ_CONFIG_FILE="${HOME}/.rez/rezconfig.py"
+    export REZ_REPO_PAYLOAD_DIR="/scratch/.rez/downloads"
+  fi
 fi
 
 
