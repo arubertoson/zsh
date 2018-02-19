@@ -15,8 +15,8 @@ unsetopt BEEP             # Hush now, quiet now.
 setopt LONG_LIST_JOBS     # List jobs in the long format by default.
 setopt AUTO_RESUME        # Attempt to resume existing job before creating a new process.
 setopt NOTIFY             # Report status of background jobs immediately.
+setopt NO_HUP             # Don't kill jobs on shell exit. 
 unsetopt BG_NICE          # Don't run all background jobs at a lower priority.
-unsetopt HUP              # Don't kill jobs on shell exit.
 unsetopt CHECK_JOBS       # Don't report on jobs when shell exit.
 
 ## History
@@ -28,7 +28,7 @@ setopt BANG_HIST                 # Don't treat '!' specially during expansion.
 setopt EXTENDED_HISTORY          # Write the history file in the ':start:elapsed;command' format.
 setopt APPEND_HISTORY            # Appends history to history file on exit
 setopt INC_APPEND_HISTORY        # Write to the history file immediately, not when the shell exits.
-setopt NO_SHARE_HISTORY             # Share history between all sessions.
+setopt NO_SHARE_HISTORY          # Don't share history between all sessions.
 setopt HIST_EXPIRE_DUPS_FIRST    # Expire a duplicate event first when trimming history.
 setopt HIST_IGNORE_DUPS          # Do not record an event that was just recorded again.
 setopt HIST_IGNORE_ALL_DUPS      # Delete an old recorded event if a new event is a duplicate.
