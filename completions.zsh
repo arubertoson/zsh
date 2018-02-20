@@ -16,9 +16,6 @@ unsetopt COMPLETE_ALIASES  # Completion for aliases
 unsetopt ALWAYS_TO_END     # Move cursor to the end of a completed word.
 unsetopt CASE_GLOB
 
-# Add custom completions
-fpath=(${ZDOTDIR}/completion $fpath)
-
 # ----------------------------------------------------------------------------
 # Completion Styles
 # ----------------------------------------------------------------------------
