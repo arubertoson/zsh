@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+fpath=( "${ZDOTDIR}/functions" "${fpath[@]}")
+
 # ----------------------------------------------------------------------------
 # Helper Functions
 # ----------------------------------------------------------------------------
@@ -44,19 +46,19 @@ fi
 
 
 # PYENV ----------------------------------------------------------------------
-_PYENV="${HOME}/.pyenv/bin"
-if [[ -d "${_PYENV}" ]]; then
-  if [ ! $(_in_env "$_PYENV" "${PATH}") ]; then
-    export PYENV_ROOT="$HOME/.pyenv/"
-    PATH="${PYENV_ROOT}/bin:$PATH"
-    # We init pyenv here as it further modifies the path and we want to keep it
-    # fairly localized
-    if [ -x "$(command -v pyenv)" ]; then
-      eval "$(pyenv init -)"
-      eval "$(pyenv virtualenv-init -)"
-    fi
-  fi
-fi
+# _PYENV="${HOME}/.pyenv/bin"
+# if [[ -d "${_PYENV}" ]]; then
+#   if [ ! $(_in_env "$_PYENV" "${PATH}") ]; then
+#     export PYENV_ROOT="$HOME/.pyenv/"
+#     PATH="${PYENV_ROOT}/bin:$PATH"
+#     # We init pyenv here as it further modifies the path and we want to keep it
+#     # fairly localized
+#     if [ -x "$(command -v pyenv)" ]; then
+#       eval "$(pyenv init -)"
+#       eval "$(pyenv virtualenv-init -)"
+#     fi
+#   fi
+# fi
 # Place miniconda in front of pyenv as we are not really interested in all
 # pyenv has to offer
 _CONDA_ROOT='/opt/miniconda'

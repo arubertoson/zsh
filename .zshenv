@@ -27,7 +27,7 @@ export EDITOR="$VISUAL"
 # If we are launching zsh with a rez environment we want to leave the path 
 # and all other environments alone as rez is supposed to be in charge of them.
 if [[ -z "${REZ_RESOLVE}" ]] ; then
-  source "${ZDOTDIR}/pathenv.zsh"
+  source "${ZDOTDIR}/env.zsh"
 fi
 
 

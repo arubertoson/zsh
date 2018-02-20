@@ -11,15 +11,17 @@ _load_repo tarjoilija/zgen $ZGEN_DIR zgen.zsh
 if ! zgen saved; then
   echo "Creating zgen save"
   _cache_clear
+  zgen load seletskiy/zsh-zgen-compinit-tweak
+
+  # Rest
 
   zgen load hlissner/zsh-autopair autopair.zsh develop
   zgen load zsh-users/zsh-history-substring-search
   zgen load zdharma/history-search-multi-word
   zgen load zsh-users/zsh-completions src
   zgen load zdharma/fast-syntax-highlighting
-  # zgen load junegunn/fzf shell
-  # zgen load rupa/z z.sh
   zgen load b4b4r07/enhancd init.sh
+  # zgen load /home/macke/.config/zsh/functions pyenv-lazy
 
   zgen save
 fi

@@ -1,0 +1,19 @@
+# if pyenv is loaded ignore this file
+if type pyenv &> /dev/null; then
+  return
+fi
+
+_init_pyenv() {
+  unset -f pyenv _init_pyenv
+
+  if [[ ! "$PATH" == */.pyenv/bin* ]]; then
+    export PATH="$HOME/.pyenv/bin:$PATH"
+  fi
+  eval "$(pyenv init -)"
+  eval "$(pyenv virtualenv-init -)"
+}
+
+pyenv() {
+  _init_pyenv
+  pyenv "$@"
+}
