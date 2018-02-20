@@ -1,18 +1,24 @@
 #!/usr/bin/env zsh
 
+# disable globals
+unsetopt GLOBAL_RCS  
+fpath+="${0:a:h}/functions"
+
 # ----------------------------------------------------------------------------
 # Defines runtime environment
 # ----------------------------------------------------------------------------
 
-export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_CACHE_HOME="/scratch/.cache"
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_BIN_HOME="${HOME}/.local/bin"
 export XDG_DATA_HOME="${HOME}/.local/share"
 
+# Move ZDOTDIR to reduce pollution
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 export ZGEN_DIR="$XDG_CACHE_HOME/zgen"
 
+# 
 export SHELL=$(command -v zsh)
 export LANG=${LANG:-en_US.UTF-8}
 export PAGER=less

@@ -73,16 +73,30 @@ prompt_init() {
   zstyle ':vcs_info:git*' actionformats ' %b (%a)'
 
   # Show username if it's not who I expect it to be
-  prompt_username='%m '
   if [[ $(whoami) != malbertsson ]]; then
-    prompt_username="%n@$prompt_username"
+    if [[ $(whoami) == 'root' ]]; then
+      prompt_username='%F{red}'
+    else
+    fi
+    prompt_username+='%n'
   fi
 
-  # Show jobs 
+  # If on ssh connection show hostname
+  if [[ -n $SSH_CONNECTION ]]; then
+    if [[ ! -z $prompt_username ]]; then
+      prompt_username+='@'
+    fi
+    prompt_username+='%m'
+  fi
+
+
+
+  # Show if background jobs are running
   prompt_jobs="%F{red}%(1j.*.)"
 
+  # draw prompt
   RPROMPT='%F{blue}%~%F{magenta}${vcs_info_msg_0_}$(prompt_git_dirty)%f'
-  PROMPT='${prompt_jobs}%F{blue}${prompt_username}%f${PROMPT_SYMBOL:-$ } '
+  PROMPT='${prompt_jobs}%F{blue}${prompt_username} %f${PROMPT_SYMBOL:-$ } '
 }
 
 prompt_init "$@"

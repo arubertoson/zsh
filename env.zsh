@@ -1,7 +1,5 @@
 #!/usr/bin/env zsh
 
-fpath=( "${ZDOTDIR}/functions" "${fpath[@]}")
-
 # ----------------------------------------------------------------------------
 # Helper Functions
 # ----------------------------------------------------------------------------
@@ -35,7 +33,7 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
 
 # REZ ------------------------------------------------------------------------
-_REZ="${HOME}/.rez/bin/rez"
+_REZ="/opt/pipeline/rez/bin/rez"
 if [ ! $(_in_env ${_REZ} ${PATH}) ]; then
   PATH="${_REZ}:${PATH}"
   if [ -x "$(command -v rez)" ]; then
@@ -44,21 +42,14 @@ if [ ! $(_in_env ${_REZ} ${PATH}) ]; then
   fi
 fi
 
-
 # PYENV ----------------------------------------------------------------------
-# _PYENV="${HOME}/.pyenv/bin"
-# if [[ -d "${_PYENV}" ]]; then
-#   if [ ! $(_in_env "$_PYENV" "${PATH}") ]; then
-#     export PYENV_ROOT="$HOME/.pyenv/"
-#     PATH="${PYENV_ROOT}/bin:$PATH"
-#     # We init pyenv here as it further modifies the path and we want to keep it
-#     # fairly localized
-#     if [ -x "$(command -v pyenv)" ]; then
-#       eval "$(pyenv init -)"
-#       eval "$(pyenv virtualenv-init -)"
-#     fi
-#   fi
-# fi
+_PYENV="${HOME}/.pyenv/bin"
+if [[ -d "${_PYENV}" ]]; then
+  # We lazy load pyenv as the init function requires some setup and we want the
+  # zsh to retain 'snappy' feeling
+  source "${ZDOTDIR}/functions/pyenv-lazy"
+fi
+
 # Place miniconda in front of pyenv as we are not really interested in all
 # pyenv has to offer
 _CONDA_ROOT='/opt/miniconda'

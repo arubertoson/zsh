@@ -7,7 +7,7 @@ penv() { printenv "$1" | tr ":" "\n" }
 
 # Fzy
 proj() { 
-  projlocs=("${(@f)$(<~/projloc)}")
+  projlocs=("${(@f)$(<~/.config/plocations)}")
   expand=
   for item in "${projlocs[@]}"; do
     ppath="$(eval echo ${item})"
@@ -35,10 +35,10 @@ alias q=exit
 alias clr=clear
 alias sudo='sudo '
 
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias -- -='cd -'
+# alias ..='/usr/bin/cd ..'
+# alias ...='cd ../..'
+# alias ....='cd ../../..'
+# alias -- -='cd -'
 
 alias ln="${aliases[ln]:-ln} -v"  # verbose ln
 alias l='ls -h1'
