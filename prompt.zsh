@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-# 
+#
 # Loosly inspired by pure <https://github.com/sindresorhus/pure>
 #
 
@@ -9,34 +9,6 @@
 VINSYM="«"
 VIISYM=">"
 GITDIRTY="*"
-
-
-# Make sure necessary version control information is available
-_load_vcs_info() {
-	zstyle ':vcs_info:*' enable git
-	zstyle ':vcs_info:*' use-simple true
-	# only export two msg variables from vcs_info
-	zstyle ':vcs_info:*' max-exports 2
-	# export branch (%b) and git toplevel (%R)
-	zstyle ':vcs_info:git*' formats '%b' '%R'
-	zstyle ':vcs_info:git*' actionformats '%b|%a' '%R'
-}
-
-
-# Update prompt symbol depending on insert mode
-zle-keymap-select() {
-  case $KEYMAP in
-    (vicmd)      
-      PROMPT_SYMBOL="%F{210}${VINSYM} "
-    ;;
-    (main|viins) 
-      # Prompt depth is shown by 
-      prompt_char=$(printf "${VIISYM}%.0s" {1..$SHLVL})
-      PROMPT_SYMBOL="${prompt_char} "
-    ;;
-  esac
-  zle && zle reset-prompt && zle -R
-}
 
 
 _is_git_dirty() {
@@ -58,12 +30,15 @@ _rprompt_render() {
   # colorswitch and marker goes a long way without complicating it.
   local git_color=green prompt_git_dirty
   if [[ -n $_vcs_info[top] ]]; then
-    if ( $(_is_git_dirty) ); then 
+    if ( $(_is_git_dirty) ); then
       git_color=red
       prompt_git_dirty="${GITDIRTY}"
     fi
     _rp1+=("%F{$git_color}${_vcs_info[branch]}${prompt_git_dirty}%f")
   fi
+
+  # Information on nested terminal
+  _rp1+=("%F{242}${SHLVL}")
 
   # Join prompt parts into the rprompt
   RPROMPT="${(j. .)_rp1}"
@@ -76,15 +51,41 @@ _hook_precmd() {
   # Fetch git information
   vcs_info
 
-	_vcs_info[top]=$vcs_info_msg_1_
-	_vcs_info[branch]=$vcs_info_msg_0_
-  
+  _vcs_info[top]=$vcs_info_msg_1_
+  _vcs_info[branch]=$vcs_info_msg_0_
+
   # Render rprompt when necessary information is configured
   _rprompt_render
 
   # Add an extra newline when the prompt redraws for a new command. It feels
   # cleaner
   [[ -n $PROMPT_DONE ]] && print ""; PROMPT_DONE=1
+}
+
+
+# Make sure necessary version control information is available
+_load_vcs_info() {
+  zstyle ':vcs_info:*' enable git
+  zstyle ':vcs_info:*' use-simple true
+  # only export two msg variables from vcs_info
+  zstyle ':vcs_info:*' max-exports 2
+  # export branch (%b) and git toplevel (%R)
+  zstyle ':vcs_info:git*' formats '%b' '%R'
+  zstyle ':vcs_info:git*' actionformats '%b|%a' '%R'
+}
+
+
+# Update prompt symbol depending on insert mode
+zle-keymap-select() {
+  case $KEYMAP in
+    (vicmd)
+      PROMPT_SYMBOL="%F{219}${VINSYM} "
+    ;;
+    (main|viins)
+      PROMPT_SYMBOL="${VIISYM} "
+    ;;
+  esac
+  zle && zle reset-prompt && zle -R
 }
 
 
@@ -103,16 +104,16 @@ prompt_init(){
 
   _load_vcs_info
 
-  local _users _uname 
-  _users=(macke malbertsson)
   # If unexpected user show username
+  local _users _uname
+  _users=(macke malbertsson)
   if (( ! ${_users[(I)$(whoami)]} ));then
     _uname=("%n")
-	# show username if root, with username in white
+    # show username if root, with username in white
     [[ $UID -eq 0 ]] && _uname=("%F{226}%n%f")
   fi
 
-	# show username:host if logged in through SSH
+  # show username:host if logged in through SSH
   [[ "$SSH_CONNECTION" != '' ]] && _uname+=('%F{122}:%m%f')
   _uname+=(' ')
 
