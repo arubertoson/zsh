@@ -27,7 +27,7 @@ _load_vcs_info() {
 zle-keymap-select() {
   case $KEYMAP in
     (vicmd)      
-      PROMPT_SYMBOL="%F{orange}${VINSYM} "
+      PROMPT_SYMBOL="%F{210}${VINSYM} "
     ;;
     (main|viins) 
       # Prompt depth is shown by 
