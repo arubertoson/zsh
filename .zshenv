@@ -2,13 +2,18 @@
 
 # disable globals
 unsetopt GLOBAL_RCS  
-fpath+="${0:a:h}/functions"
+fpath+=("${0:a:h}/functions")
 
 # ----------------------------------------------------------------------------
 # Defines runtime environment
 # ----------------------------------------------------------------------------
 
-export XDG_CACHE_HOME="/scratch/.cache"
+if [[ $(whoami) == malbertsson ]]; then
+  cache_home="/scratch/.cache"
+else
+  cache_home="${HOME}/.cache"
+fi
+export XDG_CACHE_HOME="${cache_home}"
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_BIN_HOME="${HOME}/.local/bin"
 export XDG_DATA_HOME="${HOME}/.local/share"
