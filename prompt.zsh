@@ -38,7 +38,7 @@ _rprompt_render() {
   fi
 
   # Information on nested terminal
-  _rp1+=("%F{242}${SHLVL}")
+  if (( ${SHLVL} > 1)) && _rp1+=("%F{242}${SHLVL}")
 
   # Join prompt parts into the rprompt
   RPROMPT="${(j. .)_rp1}"
