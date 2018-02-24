@@ -1,8 +1,11 @@
+#!/usr/bin/env zsh
+
 # if pyenv is loaded ignore this file
 if type pyenv &> /dev/null; then
   return
 fi
 
+# Setup pyenv and remove functions from the global scope
 _init_pyenv() {
   unset -f pyenv _init_pyenv
 
@@ -11,8 +14,10 @@ _init_pyenv() {
   fi
   eval "$(pyenv init -)"
   eval "$(pyenv virtualenv-init -)"
+
 }
 
+# Alias function to initialize pyenv when called
 pyenv() {
   _init_pyenv
   pyenv "$@"

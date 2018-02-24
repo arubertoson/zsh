@@ -1,19 +1,15 @@
 #!/usr/bin/env zsh
 
 # disable globals
-unsetopt GLOBAL_RCS  
-fpath+=("${0:a:h}/functions")
+unsetopt GLOBAL_RCS
+# To get current dir of sourced file use expansion below or "print -P %N"
+fpath=("${${(%):-%N}:A:h}/functions" "${fpath[@]}")
 
 # ----------------------------------------------------------------------------
 # Defines runtime environment
 # ----------------------------------------------------------------------------
 
-if [[ $(whoami) == malbertsson ]]; then
-  cache_home="/scratch/.cache"
-else
-  cache_home="${HOME}/.cache"
-fi
-export XDG_CACHE_HOME="${cache_home}"
+export XDG_CACHE_HOME="/scratch/.cache"
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_BIN_HOME="${HOME}/.local/bin"
 export XDG_DATA_HOME="${HOME}/.local/share"
