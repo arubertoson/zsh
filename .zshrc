@@ -33,9 +33,9 @@ source "${ZDOTDIR}/keymaps.zsh"
 source "${ZDOTDIR}/prompt.zsh"
 
 # ----------------------------------------------------------------------------
-# Load tab completion and 
+# Load tab completion and other setup
 # ----------------------------------------------------------------------------
-# All setup outside of above should be done in load.
+
 # Autopair needs to be initilized before compinit 
 autopair-init
 
@@ -51,5 +51,4 @@ fi
 eval "$(dircolors ${ZDOTDIR}/.dircolors)"
 
 # Aliases should be sourced last as it can be overridden by other plugins
-# otherwise
 source "${ZDOTDIR}/aliases.zsh"

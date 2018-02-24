@@ -33,17 +33,17 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
 
 # REZ ------------------------------------------------------------------------
-_REZ="/opt/pipeline/rez/bin/rez"
-if [ ! $(_in_env ${_REZ} ${PATH}) ]; then
-  PATH="${_REZ}:${PATH}"
+local _REZ=$(readlink -f "/opt/pipeline/apps/rez/latest/bin/rez")
+if ( ! _in_env ${_REZ} ${PATH} ); then
+  _prependenv PATH "${_REZ}"
   if [ -x "$(command -v rez)" ]; then
-    export REZ_CONFIG_FILE="${HOME}/.rez/rezconfig.py"
-    export REZ_REPO_PAYLOAD_DIR="/scratch/.rez/downloads"
+    export REZ_CONFIG_FILE="${HOME}/opt/pipeline/apps/rez/rezconfig.py"
+    export REZ_REPO_PAYLOAD_DIR="/scratch/pipeline/downloads"
   fi
 fi
 
 # PYENV ----------------------------------------------------------------------
-_PYENV="${HOME}/.pyenv/bin"
+local _PYENV="${PYENV_ROOT:-${HOME}/.pyenv}/bin"
 if [[ -d "${_PYENV}" ]]; then
   # We lazy load pyenv as the init function requires some setup and we want the
   # zsh to retain 'snappy' feeling
@@ -52,24 +52,21 @@ fi
 
 # Place miniconda in front of pyenv as we are not really interested in all
 # pyenv has to offer
-_CONDA_ROOT='/opt/miniconda'
+local _CONDA_ROOT='/opt/miniconda'
 if [[ -d "${_CONDA_ROOT}" ]]; then
-  PATH="/opt/miniconda/miniconda2/bin:/opt/miniconda/miniconda3/bin:${PATH}"
+  for p in "miniconda2" "miniconda3"; do
+    subp="${_CONDA_ROOT}/${p}/bin"
+    if ( ! _in_env ${subp} ${PATH} ); then
+      _prependenv PATH ${subp}
+    fi
+  done
 fi
 
 
 # PYENV ----------------------------------------------------------------------
-_NODE_YARN="${HOME}/.yarn/bin"
+local _NODE_YARN="${HOME}/.yarn/bin"
 if [[ -d "${_NODE_YARN}" ]]; then
-  _in_env ${_NODE_YARN} ${PATH} || PATH="${_NODE_YARN}:${PATH}"
-fi
-
-
-# CMAKE ----------------------------------------------------------------------
-# TODO: make correct symlink binding
-_CMAKE='/opt/cmake/bin'
-if [[ -d "${_CMAKE}" ]]; then
-  _in_env ${_CMAKE} ${PATH} || PATH="${_CMAKE}:${PATH}"
+  _in_env ${_NODE_YARN} ${PATH} || _prependenv PATH ${_NODE_YARN}
 fi
 
 
