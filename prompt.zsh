@@ -45,9 +45,29 @@ _rprompt_render() {
 }
 
 
+_set_title() {
+  # tell the terminal we are setting the title
+  print -n '\e]0;'
+  # Show hostname if connected through ssh
+  [[ -n $SSH_CONNECTION ]] && print -Pn '(%m) '
+
+  case $1 in
+    (expand-prompt)
+      print -Pn $2;;
+    (ignore-escape)
+      print -rn $2;;
+  esac
+
+  # end set title
+  print -n '\a'
+}
+
 # Hook into the precmd we render the RPROMPT from here as it has dependencies
 # on queires from PWD and other parts.
 _hook_precmd() {
+  # Set title
+  _set_title 'expand-prompt' '%~'
+
   # Fetch git information
   vcs_info
 
