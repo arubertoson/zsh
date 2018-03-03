@@ -14,7 +14,7 @@ GITDIRTY="*"
 _is_git_dirty() {
   # We return the result of the last executed command with $? - if hte output
   # of the git command is not empty we know it's dirty
-  test -n "$(command git status --porcelain --ignore-submodules -unormal)"
+  test -n "$(command git status -suno)"
   return $?
 }
 
