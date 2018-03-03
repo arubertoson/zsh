@@ -115,7 +115,7 @@ dev() {
     local -a pattern
     pattern=(${(s: :)item}) # split string at space 
     devlocs=(
-      $(find "${pattern[2]}" -maxdepth "${pattern[1]}" -type d) 
+      $(find ${pattern[2]} -name .git -type d -prune -exec dirname {} \;)
       ${devlocs}
     )
   done
