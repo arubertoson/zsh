@@ -28,7 +28,7 @@ export LESSHISTFILE="$XDG_DATA_HOME/lesshst"
 
 # Test
 export VISUAL=nvim
-export EDITOR="$VISUAL"
+export EDITOR="${VISUAL}"
 
 
 # If we are launching zsh with a rez environment we want to leave the path 
