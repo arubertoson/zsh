@@ -87,7 +87,7 @@ rg() {
 #   "cd ." :
 #     collects paths recursivly and resolves a path with fzy
 #   "cd" :
-#     retians functionality from enhancd
+#     retains functionality from enhancd
 #
 cd() {
   if [ ! -z "$1" ] && [ $1 == '.' ]; then
@@ -100,8 +100,10 @@ cd() {
 
 # Navigate to dev locations.
 #
-# dev locations are stored in devlocations file in the user .config directory.
-# It contains lines of <location> <depth> that describes how to parse it eg:
+# dev locations are stored in devpaths file in the XDG_CONFIG_HOME directory.
+# It contains lines of <location> that the function will parse for .git repos,
+# the search will be cached and if you want a refresh you'll have to give the 
+# -r flags (reset).
 #
 # # <devpaths>
 #       /scratch/local 1  # will look for directories in locals
@@ -109,17 +111,27 @@ cd() {
 #                                  for dev locations
 #
 dev() { 
+  [ ! -f "${XDG_CONFIG_HOME}/devpaths" ] && echo "Create devpaths" && return
+
   local -a search_paths devlocs
-  search_paths=("${(@f)$(<~/.config/devpaths)}")
-  for item in "${search_paths[@]}"; do
-    local -a pattern
-    pattern=(${(s: :)item}) # split string at space 
-    devlocs=(
-      $(find ${pattern[2]} -name .git -type d -prune -exec dirname {} \;)
-      ${devlocs}
-    )
-  done
-  cd $(printf '%s\n' "${devlocs[@]}" | fzy)
+  local cache="${XDG_CACHE_HOME}/devpaths"
+  if [ "$1" = "-r" ] || [ ! -f "${cache}" ]; then
+    search_paths=("${(@f)$(<~/.config/devpaths)}")
+    for item in "${search_paths[@]}"; do
+      if [ -d "${item}" ]; then 
+        devlocs=(
+          $(find ${item} -name .git -type d -prune -exec dirname {} \;)
+          ${devlocs}
+        )
+      fi
+    done
+
+    # Setup a cache that can be reset by giving -r as argument
+    [ "${#devlocs[@]}" -eq 0 ] || printf "%s\n" "${devlocs[@]}" >> ${cache}
+  fi
+
+  # Need to directo to builtin cd as we have overridden it with enhancd
+  builtin cd $(cat ${cache} | fzy)
 }
 
 
