@@ -126,8 +126,10 @@ dev() {
       fi
     done
 
+    # Empty cache file, we don't want to append to it
+    : > ${cache}
     # Setup a cache that can be reset by giving -r as argument
-    [ "${#devlocs[@]}" -eq 0 ] || printf "%s\n" "${devlocs[@]}" >> ${cache}
+    [ "${#devlocs[@]}" -eq 0 ] || printf "%s\n" "${devlocs[@]}" > ${cache}
   fi
 
   # Need to directo to builtin cd as we have overridden it with enhancd
