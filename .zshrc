@@ -6,6 +6,9 @@
 export ZGEN_AUTOLOAD_COMPINIT=0
 AUTOPAIR_INHIBIT_INIT=1
 
+# TODO: move to a better location, how to add variables zgen
+ENHANCD_COMMAND='_cd' 
+
 _load_repo tarjoilija/zgen $ZGEN_DIR zgen.zsh
 if ! zgen saved; then
   echo "Creating zgen save"

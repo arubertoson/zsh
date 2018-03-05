@@ -54,13 +54,7 @@ fi
 # pyenv has to offer
 local _CONDA_ROOT='/opt/miniconda'
 if [[ -d "${_CONDA_ROOT}" ]]; then
-  # Depending on which interpreted you want as default you have to switch these
-  for p in "miniconda3" "miniconda2"; do
-    subp="${_CONDA_ROOT}/${p}/bin"
-    if ( ! _in_env ${subp} ${PATH} ); then
-      _prependenv PATH ${subp}
-    fi
-  done
+  source "${_CONDA_ROOT}/2.7.14/etc/profile.d/conda.sh"
 fi
 
 
