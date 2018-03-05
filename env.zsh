@@ -33,9 +33,9 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
 
 # REZ ------------------------------------------------------------------------
-local _REZ="$(readlink -f /opt/pipeline/apps/rez/latest)"
-if ( ! _in_env ${_REZ} ${PATH} ); then
-  _prependenv PATH "${_REZ}/bin/rez"
+local _REZ="$(readlink -f /opt/pipeline/apps/rez/latest)/bin/rez"
+if [[ -d "${_REZ}" ]]; then
+  _in_env ${_REZ} ${PATH} || _prependenv PATH ${_REZ} 
   if [ -x "$(command -v rez)" ]; then
     export REZ_CONFIG_FILE=$(dirname "${_REZ}")/rezconfig.py
     export REZ_REPO_PAYLOAD_DIR="/scratch/pipeline/downloads"
@@ -54,7 +54,7 @@ fi
 # pyenv has to offer
 local _CONDA_ROOT='/opt/miniconda'
 if [[ -d "${_CONDA_ROOT}" ]]; then
-  source "${_CONDA_ROOT}/2.7.14/etc/profile.d/conda.sh"
+  source "${_CONDA_ROOT}/miniconda2/etc/profile.d/conda.sh"
 fi
 
 
