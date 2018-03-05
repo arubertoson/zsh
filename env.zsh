@@ -33,11 +33,11 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
 
 # REZ ------------------------------------------------------------------------
-local _REZ=$(readlink -f "/opt/pipeline/apps/rez/latest/bin/rez")
+local _REZ="$(readlink -f /opt/pipeline/apps/rez/latest)"
 if ( ! _in_env ${_REZ} ${PATH} ); then
-  _prependenv PATH "${_REZ}"
+  _prependenv PATH "${_REZ}/bin/rez"
   if [ -x "$(command -v rez)" ]; then
-    export REZ_CONFIG_FILE="${HOME}/opt/pipeline/apps/rez/rezconfig.py"
+    export REZ_CONFIG_FILE=$(dirname "${_REZ}")/rezconfig.py
     export REZ_REPO_PAYLOAD_DIR="/scratch/pipeline/downloads"
   fi
 fi
