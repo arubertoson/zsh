@@ -1,4 +1,4 @@
-#compdef rez
+#compdef rez zrez
 
 
 _commands=(
