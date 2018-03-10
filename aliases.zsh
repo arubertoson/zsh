@@ -151,9 +151,9 @@ alias ..='builtin cd ..'
 alias q=exit
 
 alias ln="${aliases[ln]:-ln} -v"  # verbose ln
-alias l='ls -h1'
-alias ll='ls -hl'
-alias la='LC_COLLATE=C ls -hla'
+alias l='ls -h1 --color=auto'
+alias ll='ls -hl --color=auto'
+alias la='LC_COLLATE=C ls -hla --color=auto'
 
 # notify me before clobbering files
 alias rm='rm -i -v'
