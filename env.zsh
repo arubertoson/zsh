@@ -54,7 +54,7 @@ fi
 # pyenv has to offer
 local _CONDA_ROOT='/opt/miniconda'
 if [[ -d "${_CONDA_ROOT}" ]]; then
-  source "${_CONDA_ROOT}/miniconda2/etc/profile.d/conda.sh"
+  source "${_CONDA_ROOT}/etc/profile.d/conda.sh"
 fi
 
 
