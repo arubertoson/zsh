@@ -53,12 +53,9 @@ fi
 
 # Place miniconda in front of pyenv as we are not really interested in all
 # pyenv has to offer
-local _CONDA_ROOT='/opt/pipeline/conda'
+local _CONDA_ROOT='/opt/pipeline/conda/bin'
 if [[ -d "${_CONDA_ROOT}" ]]; then
-  if [ -f "${_CONDA_ROOT}/etc/profile.d/conda.sh" ]; then
-    source "${_CONDA_ROOT}/etc/profile.d/conda.sh" 
-  fi
-  _prependenv PATH ${_CONDA_ROOT}/bin
+  _in_env ${_CONDA_ROOT} ${PATH} || _prependenv PATH ${_CONDA_ROOT}
 fi
 
 
@@ -68,6 +65,11 @@ if [[ -d "${_NODE_YARN}" ]]; then
   _in_env ${_NODE_YARN} ${PATH} || _prependenv PATH ${_NODE_YARN}
 fi
 
+# PYENV ----------------------------------------------------------------------
+local _KITTY="/opt/pipeline/kitty/bin"
+if [ -d "${_KITTY}" ]; then
+  _in_env ${_KITTY} ${PATH} || _prependenv PATH ${_KITTY}
+fi
 
 # FINALIZE -------------------------------------------------------------------
 export PATH
