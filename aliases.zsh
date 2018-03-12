@@ -141,6 +141,8 @@ dev() {
 # aliases
 # ----------------------------------------------------------------------------
 
+alias sudoenv='sudo env "PATH=$PATH"'
+
 alias yi='sudo yum install'
 alias ys='yum search'
 alias yiy='sudo yum -y install'
@@ -169,5 +171,5 @@ alias wget='wget -c'                # Resume dl if possible
 alias map="xargs -n1"
 
 # Wrapping for terminal
-alias wrap='tput rmam'
-alias nowrap='tput smam'
+alias wrap='tput smam'
+alias nowrap='tput rmam'
