@@ -31,10 +31,13 @@ export VISUAL=nvim
 export EDITOR="${VISUAL}"
 
 
+export REZ_CONFIG_FILE="~/rezconfig.py"
 # If we are launching zsh with a rez environment we want to leave the path 
 # and all other environments alone as rez is supposed to be in charge of them.
 if [[ -z "${REZ_RESOLVE}" ]] ; then
   source "${ZDOTDIR}/env.zsh"
+else
+  export PATH="${PATH}:${XDG_BIN_HOME}"
 fi
 
 

@@ -55,3 +55,5 @@ eval "$(dircolors ${ZDOTDIR}/.dircolors)"
 
 # Aliases should be sourced last as it can be overridden by other plugins
 source "${ZDOTDIR}/aliases.zsh"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
