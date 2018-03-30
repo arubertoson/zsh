@@ -125,7 +125,7 @@ prompt_init(){
   _load_vcs_info
 
   # If unexpected user show username
-  local _users _uname
+  local _users _uname _rez
   _users=(macke malbertsson)
   if (( ! ${_users[(I)$(whoami)]} ));then
     _uname=("%n")
@@ -137,8 +137,13 @@ prompt_init(){
   [[ "$SSH_CONNECTION" != '' ]] && _uname+=('%F{122}:%m%f')
   _uname+=(' ')
 
+  # show rez request
+  if [[ "$REZ_USED_REQUEST" != '' ]]; then 
+    _rez+=('%F{242}${REZ_ENV_PROMPT}${REZ_USED_REQUEST}%f')
+  fi
+
   # Need to give the PROMPT a starting point
-  PROMPT="${(j..)_uname:- }"'%(?.%F{green}.%F{red})${PROMPT_SYMBOL:-$VIISYM }%f'
+  PROMPT="${_rez:-}${(j..)_uname:- }"'%(?.%F{green}.%F{red})${PROMPT_SYMBOL:-$VIISYM }%f'
 }
 
 

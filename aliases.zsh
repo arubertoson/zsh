@@ -171,3 +171,5 @@ alias map="xargs -n1"
 # Wrapping for terminal
 alias wrap='tput rmam'
 alias nowrap='tput smam'
+
+alias _nvim='command nvim -u ~/.vim/vimrc'
