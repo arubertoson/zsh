@@ -138,8 +138,10 @@ prompt_init(){
   _uname+=(' ')
 
   # show rez request
-  if [[ "$REZ_USED_REQUEST" != '' ]]; then 
-    _rez+=('%F{242}${REZ_ENV_PROMPT}${REZ_USED_REQUEST}%f')
+  if [[ "$REZ_WORKON" != '' ]]; then
+    _rez=('%F{242}${REZ_WORKON}%f')
+  elif [[ "$REZ_USED_REQUEST" != '' ]]; then 
+    _rez=('%F{242}${REZ_ENV_PROMPT}${REZ_USED_REQUEST}%f')
   fi
 
   # Need to give the PROMPT a starting point
