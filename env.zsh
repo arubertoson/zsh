@@ -72,4 +72,4 @@ function _prependenv() {
 # fi
 
 # FINALIZE -------------------------------------------------------------------
-export PATH
+# export PATH
