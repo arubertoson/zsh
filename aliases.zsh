@@ -49,8 +49,8 @@ nvim() {
     fi
 
     if [ $1 == '.' ]; then
-      file=$(rg -f **/* | fzy) || return
-      command nvim "${file}" -u "${HOME}/.vim/vimrc" "$@" && return
+      file=$(rg -f **/* | fzf) || return
+      command nvim "${file}" -u "${HOME}/.vim/vimrc" "${@:2}" && return
     fi
   fi
   command nvim -u "${HOME}/.vim/vimrc" "$@"
@@ -113,7 +113,7 @@ cd() {
 dev() { 
   [ ! -f "${XDG_CONFIG_HOME}/devpaths" ] && echo "Create devpaths" && return
 
-  local -a search_paths devlocs
+  local -a search_paths devlocs initial
   local cache="${XDG_CACHE_HOME}/devpaths"
   if [ "$1" = "-r" ] || [ ! -f "${cache}" ]; then
     search_paths=("${(@f)$(<~/.config/devpaths)}")
@@ -130,10 +130,12 @@ dev() {
     : > ${cache}
     # Setup a cache that can be reset by giving -r as argument
     [ "${#devlocs[@]}" -eq 0 ] || printf "%s\n" "${devlocs[@]}" > ${cache}
+  elif [ ! -z "$1" ]; then
+    initial="$1"
   fi
 
   # Need to directo to builtin cd as we have overridden it with enhancd
-  builtin cd $(cat ${cache} | fzy)
+  builtin cd $(cat ${cache} | fzf --query=${initial})
 }
 
 
