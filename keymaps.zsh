@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# XXX: Needs proper cleanup when time is presented
+
 # The surround module wasn't working if KEYTIMEOUT was <= 10. Specifically,
 # (delete|change)-surround immediately abort into insert mode if KEYTIMEOUT <=
 # 8. If <= 10, then add-surround does the same. At 11, all these issues vanish.
