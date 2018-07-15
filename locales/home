@@ -1,0 +1,62 @@
+#!/usr/bin/env zsh
+
+# ---------------------------------------------------------------------------- 
+# OVERRIDES
+# ---------------------------------------------------------------------------- 
+
+export REZ_REPO_PAYLOAD_DIR="${XDG_CACHE_HOME}/archives"
+
+# ---------------------------------------------------------------------------- 
+# SOURCE
+# ---------------------------------------------------------------------------- 
+
+source "/opt/pipeline/conda/etc/profile.d/conda.sh"
+
+# ---------------------------------------------------------------------------- 
+# PIPSI
+# ---------------------------------------------------------------------------- 
+
+export PIPSI_HOME="${_BASE_OPT}/pipsi"
+export PIPSI_BIN_DIR="$(readlink -f ${PIPSI_HOME}/bin)"
+if [ -d "${PIPSI_BIN_DIR}" ]; then
+  _in_env ${PIPSI_BIN_DIR} ${PATH} || _prependenv PATH "${PIPSI_BIN_DIR}"
+fi
+
+
+# ---------------------------------------------------------------------------- 
+# PATH MANIPULATION
+# ---------------------------------------------------------------------------- 
+
+# HOME BIN -------------------------------------------------------------------
+_in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
+
+# YARN BIN -------------------------------------------------------------------
+yarn="${HOME}/.yarn/bin"
+if [ -d ${HOME}/.yarn/bin ]; then
+  _in_env ${yarn} ${PATH} || _prependenv PATH "${yarn}"
+fi
+  
+
+# USR PATHS ------------------------------------------------------------------
+paths=(
+  fzf/bin
+  kitty/bin
+  redpen/bin 
+  texlive/2018/bin/x86_64-linux 
+)
+
+for p in ${paths[@]}; do
+  add=$(readlink -f "${_BASE_OPT}/${p}")
+  # Don't Do anything if the diectory doesn't exist
+  if [ -d "${add}" ]; then
+    # If already in PATH ignore
+    _in_env ${add} ${PATH} || _prependenv PATH "${add}"
+  fi
+done
+
+
+# ---------------------------------------------------------------------------- 
+# FINALIZE
+# ---------------------------------------------------------------------------- 
+
+export PATH

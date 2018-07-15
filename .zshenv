@@ -1,44 +1,45 @@
 #!/usr/bin/env zsh
 
-# disable globals
+# ----------------------------------------------------------------------------
+# Initial Setup
+# ----------------------------------------------------------------------------
+
+# disable globals rcs, we want control of what is in our environment
 unsetopt GLOBAL_RCS
+
 # To get current dir of sourced file use expansion below or "print -P %N"
 fpath=("${${(%):-%N}:A:h}/functions" "${fpath[@]}")
+
 
 # ----------------------------------------------------------------------------
 # Defines runtime environment
 # ----------------------------------------------------------------------------
 
-export XDG_CACHE_HOME="/scratch/.cache"
-export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_BIN_HOME="${HOME}/.local/bin"
-export XDG_DATA_HOME="${HOME}/.local/share"
+export _BASE_LOCALE='home'
+export _BASE_HOME="/scratch"
+export _BASE_OPT="${_BASE_HOME}/opt"
 
-# Move ZDOTDIR to reduce pollution
+# Use XDG variables to set our environment
+export XDG_CACHE_HOME="${_BASE_HOME}/.cache"
+export XDG_CONFIG_HOME="${HOME}/.config"
+export XDG_BIN_HOME="${HOME}/${_BASE_OPT}"
+export XDG_DATA_HOME="${HOME}/${_BASE_OPT}/share"
+
+# Move ZDOTDIR to .config to reduce dot file pollution
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 export ZGEN_DIR="$XDG_CACHE_HOME/zgen"
 
-# 
+# XXX: Need to investigate pager a bit 
 export SHELL=$(command -v zsh)
 export LANG=${LANG:-en_US.UTF-8}
 export PAGER=less
 export LESS='-R -i -w -M -z-4'
 export LESSHISTFILE="$XDG_DATA_HOME/lesshst"
 
-# Test
+# XXX: Currently not working as expected
 export VISUAL=nvim
 export EDITOR="${VISUAL}"
-
-
-# If we are launching zsh with a rez environment we want to leave the path 
-# and all other environments alone as rez is supposed to be in charge of them.
-if [[ -z "${REZ_RESOLVE}" ]] ; then
-  source "${ZDOTDIR}/env.zsh"
-else
-  export PATH="${PATH}:/usr/bin:/usr/local/bin"
-  export SHELL="/usr/bin/zsh"
-fi
 
 
 # ----------------------------------------------------------------------------
@@ -71,3 +72,21 @@ function _cache_clear {
     command rm -rfv $XDG_CACHE_HOME/${SHELL##*/}/*;
 }
 
+
+function _in_env() {
+  if [[ ":$2:" == *":$1:"* ]]; then
+      return 0
+  else
+      return 1
+  fi
+}
+
+
+function _appendenv() {
+  export $1="$(printenv $1):$2"
+}
+
+
+function _prependenv() {
+  export $1="$2:$(printenv $1)"
+}
