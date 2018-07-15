@@ -10,7 +10,7 @@ export REZ_REPO_PAYLOAD_DIR="${XDG_CACHE_HOME}/archives"
 # SOURCE
 # ---------------------------------------------------------------------------- 
 
-source "/opt/pipeline/conda/etc/profile.d/conda.sh"
+source "${_BASE_OPT}/conda/base/etc/profile.d/conda.sh"
 
 # ---------------------------------------------------------------------------- 
 # PIPSI
