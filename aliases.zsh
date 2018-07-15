@@ -1,9 +1,23 @@
+#!/usr/bin/env zsh
+
 autoload -U zmv
 
 # ----------------------------------------------------------------------------
 # Alias Functions
 # ----------------------------------------------------------------------------
 
+function ghq-fzf() {
+  local selected_dir=$(ghq list | fzf --query="$LBUFFER")
+
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd $(ghq root)/${selected_dir}"
+    zle accept-line
+  fi
+
+  zle reset-prompt
+}
+zle -N ghq-fzf
+bindkey "^]" ghq-fzf
 
 # Launch man zshall with a search
 #
@@ -11,7 +25,14 @@ autoload -U zmv
 #
 #   zman printf
 #     will run "man zshall" and make a direct search for faster navigation
-zman() { PAGER="less -g -s '+/^       "$1"'" man zshall; }
+# zman() { PAGER="less -g -s '+/^       "$1"'" man zshall; }
+icat() {
+  local image=$(l | fzf)
+  kitty icat ${image}
+  zle reset-prompt
+}
+zle -N icat
+bindkey "^l" icat
 
 
 # Output environment variable
@@ -22,15 +43,20 @@ zman() { PAGER="less -g -s '+/^       "$1"'" man zshall; }
 #     will output PATH with every entry delimited by a newline
 #
 penv() { 
-  local output
-  if (( ${+1} )); then
-    output=$(printenv "$1")
-    if [ -z "${output}" ]; then
-      output=$(echo "$1")
-    fi
+  local output=$(env | fzf -0 -1)
+
+  if [ -n "${output}" ]; then
+    res=(${(@s/=/)output})
   fi
-  echo $output | tr ":" "\n" 
+
+  echo "\n${res[1]}"
+  echo "\n${res[2]}" | tr ":" "\n"
+  echo '\n'
+
+  zle reset-prompt
 }
+zle -N penv
+bindkey "^O" penv
 
 
 # Nvim overrides
@@ -161,7 +187,7 @@ alias ys='yum search'
 alias yiy='sudo yum -y install'
 
 # aliases common to all shells
-# alias rg='noglob rg'
+alias rg='noglob rg'
 alias ..='builtin cd ..'
 alias q=exit
 
