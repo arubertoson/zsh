@@ -6,21 +6,12 @@
 
 export REZ_REPO_PAYLOAD_DIR="${XDG_CACHE_HOME}/archives"
 
+
 # ---------------------------------------------------------------------------- 
 # SOURCE
 # ---------------------------------------------------------------------------- 
 
 source "${_BASE_OPT}/conda/base/etc/profile.d/conda.sh"
-
-# ---------------------------------------------------------------------------- 
-# PIPSI
-# ---------------------------------------------------------------------------- 
-
-export PIPSI_HOME="${_BASE_OPT}/pipsi"
-export PIPSI_BIN_DIR="$(readlink -f ${PIPSI_HOME}/bin)"
-if [ -d "${PIPSI_BIN_DIR}" ]; then
-  _in_env ${PIPSI_BIN_DIR} ${PATH} || _prependenv PATH "${PIPSI_BIN_DIR}"
-fi
 
 
 # ---------------------------------------------------------------------------- 
@@ -30,15 +21,28 @@ fi
 # HOME BIN -------------------------------------------------------------------
 _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
-# YARN BIN -------------------------------------------------------------------
-yarn="${HOME}/.yarn/bin"
-if [ -d ${HOME}/.yarn/bin ]; then
-  _in_env ${yarn} ${PATH} || _prependenv PATH "${yarn}"
+
+# GO PATHS -------------------------------------------------------------------
+export GOROOT="${_BASE_OPT}/go/base"
+export GOBIN="${_BASE_OPT}/go/bin"
+export GOPATH="${_BASE_OPT}/go/src"
+export GHQ_ROOT="${_BASE_HOME}/dev"
+
+
+# PIPSI----------------------------------------------------------------------- 
+export PIPSI_HOME="${_BASE_OPT}/pipsi"
+export PIPSI_BIN_DIR="$(readlink -f ${PIPSI_HOME}/bin)"
+if [ -d "${PIPSI_BIN_DIR}" ]; then
+  _in_env ${PIPSI_BIN_DIR} ${PATH} || _prependenv PATH "${PIPSI_BIN_DIR}"
 fi
-  
+
 
 # USR PATHS ------------------------------------------------------------------
 paths=(
+  go/bin
+  go/base/bin
+  nodejs/bin
+  nodejs/base/bin
   fzf/bin
   kitty/bin
   redpen/bin 
