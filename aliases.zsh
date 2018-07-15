@@ -52,10 +52,10 @@ nvim() {
 
     if [ $1 == '.' ]; then
       file="$(rg -f **/* 2> /dev/null | fzf -0 -1)"
-      command nvim "${file}" -u "${HOME}/.vim/vimrc" "${@:2}" && return
+      command nvim "${file}" "${@:2}" && return
     fi
   fi
-  command nvim -u "${HOME}/.vim/vimrc" "$@"
+  command nvim "$@"
 }
 
 
