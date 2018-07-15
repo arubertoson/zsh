@@ -43,13 +43,15 @@ penv() {
 #       search recursivly for a file that nvim will open
 #
 nvim() {
+  local file
+
   if [ ! -z "$1" ]; then
     if [ $1 == '--' ]; then
       command nvim "${@:2}" && return
     fi
 
     if [ $1 == '.' ]; then
-      file=$(rg -f **/* | fzf) || return
+      file="$(rg -f **/* 2> /dev/null | fzf -0 -1)"
       command nvim "${file}" -u "${HOME}/.vim/vimrc" "${@:2}" && return
     fi
   fi
@@ -85,13 +87,13 @@ rg() {
 # usage:
 #   
 #   "cd ." :
-#     collects paths recursivly and resolves a path with fzy
+#     collects paths recursivly and resolves a path with fzf
 #   "cd" :
 #     retains functionality from enhancd
 #
 cd() {
   if [ ! -z "$1" ] && [ $1 == '.' ]; then
-    cd $(find -type d -printf '%P\n'| fzy)
+    cd $(find -type d -printf '%P\n'| fzf)
   else
     _cd "$@"
   fi
@@ -115,6 +117,7 @@ dev() {
 
   local -a search_paths devlocs initial
   local cache="${XDG_CACHE_HOME}/devpaths"
+
   if [ "$1" = "-r" ] || [ ! -f "${cache}" ]; then
     search_paths=("${(@f)$(<~/.config/devpaths)}")
     for item in "${search_paths[@]}"; do
@@ -128,6 +131,7 @@ dev() {
 
     # Empty cache file, we don't want to append to it
     : > ${cache}
+
     # Setup a cache that can be reset by giving -r as argument
     [ "${#devlocs[@]}" -eq 0 ] || printf "%s\n" "${devlocs[@]}" > ${cache}
   elif [ ! -z "$1" ]; then
@@ -138,6 +142,15 @@ dev() {
   builtin cd $(cat ${cache} | fzf --query=${initial})
 }
 
+# Eval history command
+fh() {
+  if [ ! -n "$ZSH_NAME" ]; then
+    return
+  fi
+  cmd="$( (fc -l 1 || history) | cut -c 8- | fzf +s --tac)"
+  echo ${cmd}
+  eval "${cmd}"
+}
 
 # ----------------------------------------------------------------------------
 # aliases
@@ -148,14 +161,14 @@ alias ys='yum search'
 alias yiy='sudo yum -y install'
 
 # aliases common to all shells
-alias rg='noglob rg'
+# alias rg='noglob rg'
 alias ..='builtin cd ..'
 alias q=exit
 
 alias ln="${aliases[ln]:-ln} -v"  # verbose ln
-alias l='ls -h1 --color=auto'
-alias ll='ls -hl --color=auto'
-alias la='LC_COLLATE=C ls -hla --color=auto'
+alias l='ls -ha1 --color=auto'
+alias ll='ls -hal --color=auto'
+alias la='LC_COLLATE=C ls -hal --color=auto'
 
 # notify me before clobbering files
 alias rm='rm -i -v'
@@ -174,4 +187,3 @@ alias map="xargs -n1"
 alias wrap='tput rmam'
 alias nowrap='tput smam'
 
-alias _nvim='command nvim -u ~/.vim/vimrc'
