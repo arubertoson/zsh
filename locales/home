@@ -8,14 +8,6 @@
 export _BASE_ARCHIVES="${XDG_CACHE_HOME}/archives"
 
 
-# ---------------------------------------------------------------------------- 
-# SOURCE
-#
-# Files to source for zsh session
-# ---------------------------------------------------------------------------- 
-source "${_BASE_OPT}/conda/base/etc/profile.d/conda.sh"
-
-
 # ----------------------------------------------------------------------------
 # PATHS
 #
@@ -61,11 +53,6 @@ fi
 # (locations that will add to bin directory) should have sepparete locations
 # ----------------------------------------------------------------------------
 paths=(
-  go/bin
-  go/base/bin
-  nodejs/bin
-  nodejs/base/bin
-  fzf/bin
   kitty/bin
   redpen/bin 
   texlive/2018/bin/x86_64-linux 
@@ -80,6 +67,14 @@ for p in ${paths[@]}; do
   fi
 done
 
+
+# ---------------------------------------------------------------------------- 
+# evals
+#
+# Export PATH and other variables that needs to be set
+# ---------------------------------------------------------------------------- 
+eval "$(direnv hook zsh)"
+source "${_BASE_OPT}/conda/base/etc/profile.d/conda.sh"
 
 # ---------------------------------------------------------------------------- 
 # FINALIZE
