@@ -1,5 +1,7 @@
 #!/usr/bin/env zsh
 
+# XXX: This file is a mess and outdated, and pretty slow at times.
+
 # ----------------------------------------------------------------------------
 # Completion Option
 # ----------------------------------------------------------------------------

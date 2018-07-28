@@ -1,9 +1,23 @@
+#!/usr/bin/env zsh
+
 autoload -U zmv
 
 # ----------------------------------------------------------------------------
 # Alias Functions
 # ----------------------------------------------------------------------------
 
+function ghq-fzf() {
+  local selected_dir=$(ghq list | fzf --query="$LBUFFER")
+
+  if [ -n "$selected_dir" ]; then
+    BUFFER="cd $(ghq root)/${selected_dir}"
+    zle accept-line
+  fi
+
+  zle reset-prompt
+}
+zle -N ghq-fzf
+bindkey "^]" ghq-fzf
 
 # Launch man zshall with a search
 #
@@ -11,7 +25,14 @@ autoload -U zmv
 #
 #   zman printf
 #     will run "man zshall" and make a direct search for faster navigation
-zman() { PAGER="less -g -s '+/^       "$1"'" man zshall; }
+# zman() { PAGER="less -g -s '+/^       "$1"'" man zshall; }
+icat() {
+  local image=$(l | fzf)
+  kitty icat ${image}
+  zle reset-prompt
+}
+zle -N icat
+bindkey "^l" icat
 
 
 # Output environment variable
@@ -22,15 +43,20 @@ zman() { PAGER="less -g -s '+/^       "$1"'" man zshall; }
 #     will output PATH with every entry delimited by a newline
 #
 penv() { 
-  local output
-  if (( ${+1} )); then
-    output=$(printenv "$1")
-    if [ -z "${output}" ]; then
-      output=$(echo "$1")
-    fi
+  local output=$(env | fzf -0 -1)
+
+  if [ -n "${output}" ]; then
+    res=(${(@s/=/)output})
   fi
-  echo $output | tr ":" "\n" 
+
+  echo "\n${res[1]}"
+  echo "\n${res[2]}" | tr ":" "\n"
+  echo '\n'
+
+  zle reset-prompt
 }
+zle -N penv
+bindkey "^O" penv
 
 
 # Nvim overrides
@@ -43,17 +69,19 @@ penv() {
 #       search recursivly for a file that nvim will open
 #
 nvim() {
+  local file
+
   if [ ! -z "$1" ]; then
     if [ $1 == '--' ]; then
       command nvim "${@:2}" && return
     fi
 
     if [ $1 == '.' ]; then
-      file=$(rg -f **/* | fzy) || return
-      command nvim "${file}" -u "${HOME}/.vim/vimrc" "$@" && return
+      file="$(rg -f **/* 2> /dev/null | fzf -0 -1)"
+      command nvim "${file}" "${@:2}" && return
     fi
   fi
-  command nvim -u "${HOME}/.vim/vimrc" "$@"
+  command nvim "$@"
 }
 
 
@@ -85,13 +113,13 @@ rg() {
 # usage:
 #   
 #   "cd ." :
-#     collects paths recursivly and resolves a path with fzy
+#     collects paths recursivly and resolves a path with fzf
 #   "cd" :
 #     retains functionality from enhancd
 #
 cd() {
   if [ ! -z "$1" ] && [ $1 == '.' ]; then
-    cd $(find -type d -printf '%P\n'| fzy)
+    cd $(find -type d -printf '%P\n'| fzf)
   else
     _cd "$@"
   fi
@@ -113,8 +141,9 @@ cd() {
 dev() { 
   [ ! -f "${XDG_CONFIG_HOME}/devpaths" ] && echo "Create devpaths" && return
 
-  local -a search_paths devlocs
+  local -a search_paths devlocs initial
   local cache="${XDG_CACHE_HOME}/devpaths"
+
   if [ "$1" = "-r" ] || [ ! -f "${cache}" ]; then
     search_paths=("${(@f)$(<~/.config/devpaths)}")
     for item in "${search_paths[@]}"; do
@@ -128,14 +157,26 @@ dev() {
 
     # Empty cache file, we don't want to append to it
     : > ${cache}
+
     # Setup a cache that can be reset by giving -r as argument
     [ "${#devlocs[@]}" -eq 0 ] || printf "%s\n" "${devlocs[@]}" > ${cache}
+  elif [ ! -z "$1" ]; then
+    initial="$1"
   fi
 
   # Need to directo to builtin cd as we have overridden it with enhancd
-  builtin cd $(cat ${cache} | fzy)
+  builtin cd $(cat ${cache} | fzf --query=${initial})
 }
 
+# Eval history command
+fh() {
+  if [ ! -n "$ZSH_NAME" ]; then
+    return
+  fi
+  cmd="$( (fc -l 1 || history) | cut -c 8- | fzf +s --tac)"
+  echo ${cmd}
+  eval "${cmd}"
+}
 
 # ----------------------------------------------------------------------------
 # aliases
@@ -153,9 +194,9 @@ alias ..='builtin cd ..'
 alias q=exit
 
 alias ln="${aliases[ln]:-ln} -v"  # verbose ln
-alias l='ls -h1 --color=auto'
-alias ll='ls -hl --color=auto'
-alias la='LC_COLLATE=C ls -hla --color=auto'
+alias l='ls -ha1 --color=auto'
+alias ll='ls -hal --color=auto'
+alias la='LC_COLLATE=C ls -hal --color=auto'
 
 # notify me before clobbering files
 alias rm='rm -i -v'
@@ -171,5 +212,5 @@ alias wget='wget -c'                # Resume dl if possible
 alias map="xargs -n1"
 
 # Wrapping for terminal
-alias wrap='tput smam'
-alias nowrap='tput rmam'
+alias wrap='tput rmam'
+alias nowrap='tput smam'
