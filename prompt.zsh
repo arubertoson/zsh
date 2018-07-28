@@ -65,14 +65,19 @@ _set_title() {
 # Hook into the precmd we render the RPROMPT from here as it has dependencies
 # on queires from PWD and other parts.
 _hook_precmd() {
-  # Set title
-  _set_title 'expand-prompt' '%~'
 
   # Fetch git information
   vcs_info
 
   _vcs_info[top]=$vcs_info_msg_1_
   _vcs_info[branch]=$vcs_info_msg_0_
+
+  # Set title
+  if [[ -n $_vcs_info[top] ]]; then
+    _set_title 'ignore-escape' "git:$(basename $_vcs_info[top])-$_vcs_info[branch]"
+  # else     
+  #   _set_title 'expand-prompt' '%~'
+  fi
 
   # Render rprompt when necessary information is configured
   _rprompt_render
@@ -125,7 +130,7 @@ prompt_init(){
   _load_vcs_info
 
   # If unexpected user show username
-  local _users _uname
+  local _users _uname _rez
   _users=(macke malbertsson)
   if (( ! ${_users[(I)$(whoami)]} ));then
     _uname=("%n")
@@ -137,8 +142,15 @@ prompt_init(){
   [[ "$SSH_CONNECTION" != '' ]] && _uname+=('%F{122}:%m%f')
   _uname+=(' ')
 
+  # show rez request
+  if [[ "$REZ_WORKON" != '' ]]; then
+    _rez=('%F{242}${REZ_WORKON}%f')
+  elif [[ "$REZ_USED_REQUEST" != '' ]]; then 
+    _rez=('%F{242}${REZ_ENV_PROMPT}${REZ_USED_REQUEST}%f')
+  fi
+
   # Need to give the PROMPT a starting point
-  PROMPT="${(j..)_uname:- }"'%(?.%F{green}.%F{red})${PROMPT_SYMBOL:-$VIISYM }%f'
+  PROMPT="${_rez:-}${(j..)_uname:- }"'%(?.%F{green}.%F{red})${PROMPT_SYMBOL:-$VIISYM }%f'
 }
 
 
