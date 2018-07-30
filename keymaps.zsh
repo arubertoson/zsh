@@ -1,6 +1,8 @@
-#!/usr/bin/env zsh
-
-# XXX: Needs proper cleanup when time is presented
+# -----------------------------------------------------------------------------
+# KeyMaps
+#
+# author: Marcus Albertsson
+# -----------------------------------------------------------------------------
 
 # The surround module wasn't working if KEYTIMEOUT was <= 10. Specifically,
 # (delete|change)-surround immediately abort into insert mode if KEYTIMEOUT <=
@@ -10,13 +12,29 @@ export KEYTIMEOUT=15
 
 autoload -U is-at-least
 
-## vi-mode ###############
+# -----------------------------------------------------------------------------
+# Vi Mode
+# -----------------------------------------------------------------------------
+
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 bindkey -M viins ' ' magic-space
-# bindkey -M viins '^I' expand-or-complete-prefix
 
-# surround
+# Open current prompt in external editor
+autoload -Uz edit-command-line; zle -N edit-command-line
+bindkey '^@q' edit-command-line
+
+bindkey -M viins '^w' backward-kill-word
+bindkey -M vicmd 'H'  run-help
+
+# Shift + Tab
+bindkey -M viins '^[[Z' reverse-menu-complete
+
+
+# ----------------------------------------------------------------------------
+# Surround
+# ----------------------------------------------------------------------------
+
 autoload -Uz surround
 zle -N delete-surround surround
 zle -N add-surround surround
@@ -44,88 +62,74 @@ if is-at-least 5.0.8; then
   done
 fi
 
-# Open current prompt in external editor
-autoload -Uz edit-command-line; zle -N edit-command-line
-bindkey '^ ' edit-command-line
 
-bindkey -M viins '^n' history-substring-search-down
-bindkey -M viins '^p' history-substring-search-up
-bindkey -M viins '^s' history-incremental-pattern-search-backward
-bindkey -M viins '^u' backward-kill-line
-bindkey -M viins '^w' backward-kill-word
-bindkey -M viins '^b' backward-word
-bindkey -M viins '^f' forward-word
-bindkey -M viins '^g' push-line-or-edit
-bindkey -M viins '^a' beginning-of-line
-bindkey -M viins '^e' end-of-line
-bindkey -M viins '^d' push-line-or-edit
+# ----------------------------------------------------------------------------
+# Fzf widget
+# ----------------------------------------------------------------------------
 
-bindkey -M vicmd '^k' kill-line
-bindkey -M vicmd 'H'  run-help
-
-# Shift + Tab
-bindkey -M viins '^[[Z' reverse-menu-complete
-
-# bind UP and DOWN arrow keys
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
-
-# C-z to toggle current process (background/foreground)
-fancy-ctrl-z () {
-  if [[ $#BUFFER -eq 0 ]]; then
-    BUFFER="fg"
-    zle accept-line
-  else
-    zle push-input
-    zle clear-screen
-  fi
-}
-zle -N fancy-ctrl-z
-bindkey '^Z' fancy-ctrl-z
-
-# Omni-Completion
-bindkey -M viins '^x^f' fasd-complete-f  # C-x C-f to do fasd-complete-f (only files)
-bindkey -M viins '^x^d' fasd-complete-d  # C-x C-d to do fasd-complete-d (only directories)
-# Completing words in buffer in tmux
-if [ -n "$TMUX" ]; then
-  _tmux_pane_words() {
-    local expl
-    local -a w
-    if [[ -z "$TMUX_PANE" ]]; then
-      _message "not running inside tmux!"
-      return 1
-    fi
-    w=( ${(u)=$(tmux capture-pane \; show-buffer \; delete-buffer)} )
-    _wanted values expl 'words from current tmux pane' compadd -a w
-  }
-
-  zle -C tmux-pane-words-prefix   complete-word _generic
-  zle -C tmux-pane-words-anywhere complete-word _generic
-
-  bindkey -M viins '^x^n' tmux-pane-words-prefix
-  bindkey -M viins '^x^o' tmux-pane-words-anywhere
-
-  zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' completer _tmux_pane_words
-  zstyle ':completion:tmux-pane-words-(prefix|anywhere):*' ignore-line current
-  zstyle ':completion:tmux-pane-words-anywhere:*' matcher-list 'b:=* m:{A-Za-z}={a-zA-Z}'
+# Only Continue if fzf is available
+if (command -v fzf); then
+  echo "fzf is not available - install if you want to activate fzf widgets"
+  return
 fi
 
-# Vim's C-x C-l in zsh
-history-beginning-search-backward-then-append() {
-  zle history-beginning-search-backward
-  zle vi-add-eol
+
+fzf-icat() {
+  image=$( \
+    rg -f * --maxdepth 1 | \
+    map file --mime-type | \
+    rg image | fzf | cut -f1 -d":" \
+  )
+
+  kitty icat ${image}
+  zle reset-prompt
 }
-zle -N history-beginning-search-backward-then-append
-bindkey -M viins '^x^l' history-beginning-search-backward-then-append
 
-# Fix the DEL key
-bindkey -M vicmd "^[[3~" delete-char
-bindkey "^[[3~" delete-char
 
-# Fix vimmish ESC
-bindkey -sM vicmd '^[' '^G'
-bindkey -rM viins '^X'
-bindkey -M viins '^X,' _history-complete-newer \
-  '^X/' _history-complete-older \
-  '^X`' _bash_complete-word
+fzf-echo-env() { 
+  echo ''
+  env | cut -f1 -d"=" | fzf | xargs printenv | tr ":" "\n"
+  echo ''
+  zle reset-prompt
+}
+
+
+fzf-change-directory() {
+  builtin cd $(find -type d -printf '%P\n' | fzf --tac)
+}
+
+
+fzf-select-job() {
+  job=$(jobs | fzf | rg '[0-9]' -o)
+  BUFFER="fg %${job}"
+
+  zle accept-line
+  zle reset-prompt
+}
+
+# Expose zle functions
+zle -N fzf-select-job
+zle -N fzf-icat
+zle -N fzf-echo-env
+zle -N fzf-change-directory
+
+
+# Custom Functions bindings
+bindkey "^@i" fzf-icat
+bindkey "^@j" fzf-select-job
+bindkey "^@p" fzf-echo-env
+bindkey "^@t" fzf-change-directory
+
+
+# Fzf-widget plugin
+if [ -n "$(declare -fF fzf-select-widget)" ]; then
+  bindkey '^@r' fzf-select-widget
+  bindkey '^@h' fzf-insert-history
+  bindkey '^@f' fzf-edit-files
+
+  bindkey '^@]' fzf-git-change-repository
+  bindkey '^@ga' fzf-git-add-files
+  bindkey '^@gc' fzf-git-checkout-branch
+  bindkey '^@gd' fzf-git-delete-branch
+fi
 

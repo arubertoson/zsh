@@ -6,97 +6,11 @@ autoload -U zmv
 # Alias Functions
 # ----------------------------------------------------------------------------
 
-function ghq-fzf() {
-  local selected_dir=$(ghq list | fzf --query="$LBUFFER")
-
-  if [ -n "$selected_dir" ]; then
-    BUFFER="cd $(ghq root)/${selected_dir}"
-    zle accept-line
-  fi
-
-  zle reset-prompt
-}
-zle -N ghq-fzf
-bindkey "^]" ghq-fzf
-
-# Launch man zshall with a search
-#
-# usage:
-#
-#   zman printf
-#     will run "man zshall" and make a direct search for faster navigation
-# zman() { PAGER="less -g -s '+/^       "$1"'" man zshall; }
-icat() {
-  local image=$(l | fzf)
-  kitty icat ${image}
-  zle reset-prompt
-}
-zle -N icat
-bindkey "^l" icat
-
-
-# Output environment variable
-#
-# usage:
-#
-#   "penv ${PATH:- PATH}" :
-#     will output PATH with every entry delimited by a newline
-#
-penv() { 
-  local output=$(env | fzf -0 -1)
-
-  if [ -n "${output}" ]; then
-    res=(${(@s/=/)output})
-  fi
-
-  echo "\n${res[1]}"
-  echo "\n${res[2]}" | tr ":" "\n"
-  echo '\n'
-
-  zle reset-prompt
-}
-zle -N penv
-bindkey "^O" penv
-
-
-# Nvim overrides
-#
-# usage:
-#
-#     nvim -- :
-#       start a nvim session with default configurations
-#     nvim .  :
-#       search recursivly for a file that nvim will open
-#
-nvim() {
-  local file
-
-  if [ ! -z "$1" ]; then
-    if [ $1 == '--' ]; then
-      command nvim "${@:2}" && return
-    fi
-
-    if [ $1 == '.' ]; then
-      file="$(rg -f **/* 2> /dev/null | fzf -0 -1)"
-      command nvim "${file}" "${@:2}" && return
-    fi
-  fi
-  command nvim "$@"
-}
-
-
-# rg override
-#
-# normally "rg -f <filename>" will search for the given pattern in the -f files.
-# I've simplified it by letting rg act as if I'm doing the "rg -g <pattern>
-# --files" by simply inputting "rg -f <pattern>"
-#
-# usage:
-#
-#   "rg -f **/*.zsh" :
-#     search recursivly for all .zsh files
-#   
 rg() {
+# the -f flag now behaves like a glob by default
+#   usage:
+#     "rg -f **/*.zsh"
+#   
   if [ ! -z "$1" ] && [ $1 == '-f' ];then
     command rg -g "${@:2}" --files --hidden
   else
@@ -104,79 +18,11 @@ rg() {
   fi
 }
 
-
-# cd override
-#
-# _cd is an alias pointing to the enhancd plugin, it does not support custom
-# arguments, this acts as a wrapper to give me the flexibility I want.
-# 
-# usage:
-#   
-#   "cd ." :
-#     collects paths recursivly and resolves a path with fzf
-#   "cd" :
-#     retains functionality from enhancd
-#
 cd() {
-  if [ ! -z "$1" ] && [ $1 == '.' ]; then
-    cd $(find -type d -printf '%P\n'| fzf)
-  else
-    _cd "$@"
-  fi
+# enhancd override
+  _cd "$@"
 }
 
-
-# Navigate to dev locations.
-#
-# dev locations are stored in devpaths file in the XDG_CONFIG_HOME directory.
-# It contains lines of <location> that the function will parse for .git repos,
-# the search will be cached and if you want a refresh you'll have to give the 
-# -r flags (reset).
-#
-# # <devpaths>
-#       /scratch/local 1  # will look for directories in locals
-#       /storage/dev/projects 2  # will look in projects and subdirectories 
-#                                  for dev locations
-#
-dev() { 
-  [ ! -f "${XDG_CONFIG_HOME}/devpaths" ] && echo "Create devpaths" && return
-
-  local -a search_paths devlocs initial
-  local cache="${XDG_CACHE_HOME}/devpaths"
-
-  if [ "$1" = "-r" ] || [ ! -f "${cache}" ]; then
-    search_paths=("${(@f)$(<~/.config/devpaths)}")
-    for item in "${search_paths[@]}"; do
-      if [ -d "${item}" ]; then 
-        devlocs=(
-          $(find ${item} -name .git -type d -prune -exec dirname {} \;)
-          ${devlocs}
-        )
-      fi
-    done
-
-    # Empty cache file, we don't want to append to it
-    : > ${cache}
-
-    # Setup a cache that can be reset by giving -r as argument
-    [ "${#devlocs[@]}" -eq 0 ] || printf "%s\n" "${devlocs[@]}" > ${cache}
-  elif [ ! -z "$1" ]; then
-    initial="$1"
-  fi
-
-  # Need to directo to builtin cd as we have overridden it with enhancd
-  builtin cd $(cat ${cache} | fzf --query=${initial})
-}
-
-# Eval history command
-fh() {
-  if [ ! -n "$ZSH_NAME" ]; then
-    return
-  fi
-  cmd="$( (fc -l 1 || history) | cut -c 8- | fzf +s --tac)"
-  echo ${cmd}
-  eval "${cmd}"
-}
 
 # ----------------------------------------------------------------------------
 # aliases
