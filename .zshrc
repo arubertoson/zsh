@@ -19,6 +19,8 @@ if ! zgen saved; then
   zgen load zsh-users/zsh-completions src
   zgen load b4b4r07/enhancd init.sh
 
+  zgen load ytet5uy4/fzf-widgets init.zsh
+
   if [[ -z $SSH_CONNECTION ]]; then
     zgen load zdharma/fast-syntax-highlighting
   fi

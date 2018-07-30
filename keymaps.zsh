@@ -1,4 +1,8 @@
-#!/usr/bin/env zsh
+# -----------------------------------------------------------------------------
+# KeyMaps
+#
+# author: Marcus Albertsson
+# -----------------------------------------------------------------------------
 
 # XXX: Needs proper cleanup when time is presented
 
@@ -10,11 +14,13 @@ export KEYTIMEOUT=15
 
 autoload -U is-at-least
 
-## vi-mode ###############
+# -----------------------------------------------------------------------------
+# Vi Mode
+# -----------------------------------------------------------------------------
+
 bindkey -v
 bindkey -M viins 'jk' vi-cmd-mode
 bindkey -M viins ' ' magic-space
-# bindkey -M viins '^I' expand-or-complete-prefix
 
 # surround
 autoload -Uz surround

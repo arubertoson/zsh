@@ -26,13 +26,13 @@ bindkey "^]" ghq-fzf
 #   zman printf
 #     will run "man zshall" and make a direct search for faster navigation
 # zman() { PAGER="less -g -s '+/^       "$1"'" man zshall; }
-icat() {
-  local image=$(l | fzf)
-  kitty icat ${image}
-  zle reset-prompt
-}
-zle -N icat
-bindkey "^l" icat
+# icat() {
+#   local image=$(l | fzf)
+#   kitty icat ${image}
+#   zle reset-prompt
+# }
+# zle -N icat
+# bindkey "^l" icat
 
 
 # Output environment variable
@@ -42,21 +42,21 @@ bindkey "^l" icat
 #   "penv ${PATH:- PATH}" :
 #     will output PATH with every entry delimited by a newline
 #
-penv() { 
-  local output=$(env | fzf -0 -1)
-
-  if [ -n "${output}" ]; then
-    res=(${(@s/=/)output})
-  fi
-
-  echo "\n${res[1]}"
-  echo "\n${res[2]}" | tr ":" "\n"
-  echo '\n'
-
-  zle reset-prompt
-}
-zle -N penv
-bindkey "^O" penv
+# penv() { 
+#   local output=$(env | fzf -0 -1)
+#
+#   if [ -n "${output}" ]; then
+#     res=(${(@s/=/)output})
+#   fi
+#
+#   echo "\n${res[1]}"
+#   echo "\n${res[2]}" | tr ":" "\n"
+#   echo '\n'
+#
+#   zle reset-prompt
+# }
+# zle -N penv
+# bindkey "^O" penv
 
 
 # Nvim overrides
@@ -169,14 +169,14 @@ dev() {
 }
 
 # Eval history command
-fh() {
-  if [ ! -n "$ZSH_NAME" ]; then
-    return
-  fi
-  cmd="$( (fc -l 1 || history) | cut -c 8- | fzf +s --tac)"
-  echo ${cmd}
-  eval "${cmd}"
-}
+# fh() {
+#   if [ ! -n "$ZSH_NAME" ]; then
+#     return
+#   fi
+#   cmd="$( (fc -l 1 || history) | cut -c 8- | fzf +s --tac)"
+#   echo ${cmd}
+#   eval "${cmd}"
+# }
 
 # ----------------------------------------------------------------------------
 # aliases
