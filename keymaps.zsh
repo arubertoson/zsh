@@ -68,7 +68,7 @@ fi
 # ----------------------------------------------------------------------------
 
 # Only Continue if fzf is available
-if (command -v fzf); then
+if (! command -v fzf &> /dev/null); then
   echo "fzf is not available - install if you want to activate fzf widgets"
   return
 fi
@@ -82,7 +82,6 @@ fzf-icat() {
   )
 
   kitty icat ${image}
-  zle reset-prompt
 }
 
 
