@@ -107,11 +107,24 @@ fzf-select-job() {
   zle reset-prompt
 }
 
+
+fzf-insert-history() {
+  hist=$(fc -l 1 | fzf --tac --tiebreak=index --bind=ctrl-r:toggle-sort \
+    --query="$LBUFFER" +m | sed 's/^ *[0-9]* *//')
+
+  BUFFER=${hist}
+  zle redisplay
+  zle accept-line
+  zle reset-prompt
+}
+
+
 # Expose zle functions
 zle -N fzf-select-job
 zle -N fzf-icat
 zle -N fzf-echo-env
 zle -N fzf-change-directory
+zle -N fzf-insert-history
 
 
 # Custom Functions bindings
@@ -119,12 +132,12 @@ bindkey "^@i" fzf-icat
 bindkey "^@j" fzf-select-job
 bindkey "^@p" fzf-echo-env
 bindkey "^@t" fzf-change-directory
+bindkey '^@h' fzf-insert-history
 
 
 # Fzf-widget plugin
 if [ -n "$(declare -fF fzf-select-widget)" ]; then
   bindkey '^@r' fzf-select-widget
-  bindkey '^@h' fzf-insert-history
   bindkey '^@f' fzf-edit-files
 
   bindkey '^@]' fzf-git-change-repository
