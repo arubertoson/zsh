@@ -30,6 +30,14 @@ fi
 
 
 # ----------------------------------------------------------------------------
+# CUSTOM PATH
+#
+# Aliases should be sourced last, otherwise we run the risk of letting other
+# plugins override functionality
+# ----------------------------------------------------------------------------
+source "${ZDOTDIR}/locales/${_BASE_LOCALE}"
+
+# ----------------------------------------------------------------------------
 # Source custom setup scripts
 # ----------------------------------------------------------------------------
 
@@ -67,13 +75,4 @@ eval "$(dircolors ${ZDOTDIR}/.dircolors)"
 # plugins override functionality
 # ----------------------------------------------------------------------------
 source "${ZDOTDIR}/aliases.zsh"
-
-# ----------------------------------------------------------------------------
-# CUSTOM PATH
-#
-# Aliases should be sourced last, otherwise we run the risk of letting other
-# plugins override functionality
-# ----------------------------------------------------------------------------
-
-source "${ZDOTDIR}/locales/${_BASE_LOCALE}"
 

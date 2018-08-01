@@ -73,8 +73,11 @@ done
 #
 # Export PATH and other variables that needs to be set
 # ---------------------------------------------------------------------------- 
-eval "$(direnv hook zsh)"
-source "${_BASE_OPT}/conda/base/etc/profile.d/conda.sh"
+if (command -v direnv &> /dev/null );then
+  eval "$(direnv hook zsh)"
+fi
+
+source "/opt/pipeline/conda/base/etc/profile.d/conda.sh"
 
 # ---------------------------------------------------------------------------- 
 # FINALIZE
