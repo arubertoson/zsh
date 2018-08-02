@@ -108,25 +108,44 @@ fzf-select-job() {
 
 
 fzf-insert-history() {
-  hist=$(fc -l 1 | fzf --tac --tiebreak=index --bind=ctrl-r:toggle-sort \
-    --query="$LBUFFER" +m | sed 's/^ *[0-9]* *//')
+  hist=$(fc -l 1 \
+    | fzf --tac --tiebreak=index --query="$LBUFFER" +m \
+    | sed 's/^ *[0-9]* *//'
+  )
 
-  BUFFER=${hist}
-  zle redisplay
-  zle accept-line
-  zle reset-prompt
+
+  if [ -n ${hist} ];then
+    BUFFER=${hist}
+    zle accept-line
+    zle reset-prompt
+  fi
 }
 
 
+fzf-change-to-ghq-project() {
+  proj=$(ghq list \
+    | sort \
+    | fzf
+  )
+
+  if [ -n ${proj} ];then
+    BUFFER="cd ${GHQ_ROOT}/${proj}"
+    zle accept-line
+    zle reset-prompt
+  fi
+}
+
 # Expose zle functions
-zle -N fzf-select-job
 zle -N fzf-icat
 zle -N fzf-echo-env
-zle -N fzf-change-directory
+zle -N fzf-select-job
 zle -N fzf-insert-history
+zle -N fzf-change-directory
+zle -N fzf-change-to-ghq-project
 
 
 # Custom Functions bindings
+bindkey "^@\\" fzf-change-to-ghq-project
 bindkey "^@i" fzf-icat
 bindkey "^@j" fzf-select-job
 bindkey "^@p" fzf-echo-env
@@ -139,7 +158,6 @@ if [ -n "$(declare -fF fzf-select-widget)" ]; then
   bindkey '^@r' fzf-select-widget
   bindkey '^@f' fzf-edit-files
 
-  bindkey '^@]' fzf-git-change-repository
   bindkey '^@ga' fzf-git-add-files
   bindkey '^@gc' fzf-git-checkout-branch
   bindkey '^@gd' fzf-git-delete-branch
