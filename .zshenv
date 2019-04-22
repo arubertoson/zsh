@@ -17,13 +17,12 @@ fpath=("${${(%):-%N}:A:h}/functions" "${fpath[@]}")
 
 export _BASE_LOCALE='home'
 export _BASE_HOME="/scratch"
-export _BASE_OPT="${_BASE_HOME}/opt"
 
 # Use XDG variables to set our environment
 export XDG_CACHE_HOME="${_BASE_HOME}/.cache"
 export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_BIN_HOME="$(readlink -f ${_BASE_OPT}/bin)"
-export XDG_DATA_HOME="${HOME}/${_BASE_OPT}/share"
+export XDG_BIN_HOME="$(readlink -f ${_BASE_HOME}/bin)"
+export XDG_DATA_HOME="${HOME}/${_BASE_HOME}/share"
 
 # Move ZDOTDIR to .config to reduce dot file pollution
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
