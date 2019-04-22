@@ -22,50 +22,21 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 # Take control over go environment by specifying conda paths
 # ----------------------------------------------------------------------------
 export CONDARC="${XDG_CONFIG_HOME}/.condarc"
+export CONDA_PKGS_DIRS="${_BASE_HOME}/.conda/pkgs"
+export CONDA_ENVS_PATH="${_BASE_HOME}/.conda/envs"
+
+source "${_BASE_HOME}/opt/conda/current/etc/profile.d/conda.sh"
+
 
 # ----------------------------------------------------------------------------
 # GO PATHS 
 #
 # Take control over go environment by specifying GO paths
 # ----------------------------------------------------------------------------
-export GOROOT="${_BASE_OPT}/go/current"
-export GOBIN="${_BASE_OPT}/go/bin"
-export GOPATH="${_BASE_OPT}/go/src"
-export GHQ_ROOT="${_BASE_HOME}/dev"
-
-
-# ---------------------------------------------------------------------------- 
-# PIPSI
-#
-# Is used to provide python executables that we want to launch with specific
-# python versions, it's great as you don'thave to bother managing environments
-# for executables you use in your everyday life.
-# ---------------------------------------------------------------------------- 
-export PIPSI_HOME="${_BASE_OPT}/pipsi"
-export PIPSI_BIN_DIR="$(readlink -f ${PIPSI_HOME}/bin)"
-if [ -d "${PIPSI_BIN_DIR}" ]; then
-  _in_env ${PIPSI_BIN_DIR} ${PATH} || _prependenv PATH "${PIPSI_BIN_DIR}"
-fi
-
-
-# XXX: 
-# All static packages should symmlink to the XDG bin folder, all dynamic
-# (locations that will add to bin directory) should have sepparete locations
-# ----------------------------------------------------------------------------
-paths=(
-  kitty/bin
-  redpen/bin 
-  texlive/2018/bin/x86_64-linux 
-)
-
-for p in ${paths[@]}; do
-  add=$(readlink -f "${_BASE_OPT}/${p}")
-  # Don't Do anything if the diectory doesn't exist
-  if [ -d "${add}" ]; then
-    # If already in PATH ignore
-    _in_env ${add} ${PATH} || _prependenv PATH "${add}"
-  fi
-done
+# export GOROOT="${_BASE_OPT}/go/current"
+# export GOBIN="${_BASE_OPT}/go/bin"
+# export GOPATH="${_BASE_OPT}/go/src"
+# export GHQ_ROOT="${_BASE_HOME}/dev"
 
 
 # ---------------------------------------------------------------------------- 
@@ -77,7 +48,6 @@ if (command -v direnv &> /dev/null );then
   eval "$(direnv hook zsh)"
 fi
 
-source "/opt/pipeline/conda/base/etc/profile.d/conda.sh"
 
 # ---------------------------------------------------------------------------- 
 # FINALIZE
