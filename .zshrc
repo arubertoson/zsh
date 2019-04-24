@@ -70,3 +70,10 @@ eval "$(dircolors ${ZDOTDIR}/.dircolors)"
 
 source "${ZDOTDIR}/aliases.zsh"
 
+
+# ----------------------------------------------------------------------------
+# TMUX
+# ----------------------------------------------------------------------------
+
+[ -z "$TMUX" ] && { tmux attach || exec tmux new-session && exit;}
+
