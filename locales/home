@@ -29,8 +29,8 @@ export CONDARC="${XDG_CONFIG_HOME}/.condarc"
 # Take control over go environment by specifying GO paths
 # ----------------------------------------------------------------------------
 export GOROOT="${_BASE_OPT}/go/current"
-export GOBIN="${_BASE_OPT}/go/bin"
-export GOPATH="${_BASE_OPT}/go/src"
+export GOPATH="${_BASE_OPT}/go/package"
+export GOBIN="${GOPATH}/bin"
 export GHQ_ROOT="${_BASE_HOME}/dev"
 
 
@@ -77,7 +77,7 @@ if (command -v direnv &> /dev/null );then
   eval "$(direnv hook zsh)"
 fi
 
-source "/opt/pipeline/conda/base/etc/profile.d/conda.sh"
+source "/scratch/opt/conda/etc/profile.d/conda.sh"
 
 # ---------------------------------------------------------------------------- 
 # FINALIZE
