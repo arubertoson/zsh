@@ -6,6 +6,7 @@
 # Environment variables to set for zsh session
 # ---------------------------------------------------------------------------- 
 export _BASE_ARCHIVES="${XDG_CACHE_HOME}/archives"
+export XDG_APP_HOME="${_BASE_HOME}/opt"
 
 
 # ----------------------------------------------------------------------------
@@ -33,10 +34,10 @@ source "${_BASE_HOME}/opt/conda/current/etc/profile.d/conda.sh"
 #
 # Take control over go environment by specifying GO paths
 # ----------------------------------------------------------------------------
-# export GOROOT="${_BASE_OPT}/go/current"
+export GOROOT="${XDG_APP_HOME}/go/current"
+export GHQ_ROOT="${_BASE_HOME}/dev"
 # export GOPATH="${_BASE_OPT}/go/package"
 # export GOBIN="${GOPATH}/bin"
-# export GHQ_ROOT="${_BASE_HOME}/dev"
 
 
 # ---------------------------------------------------------------------------- 
