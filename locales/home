@@ -35,9 +35,10 @@ source "${_BASE_HOME}/opt/conda/current/etc/profile.d/conda.sh"
 # Take control over go environment by specifying GO paths
 # ----------------------------------------------------------------------------
 export GOROOT="${XDG_APP_HOME}/go/current"
+export GOPATH="${XDG_APP_HOME}/go/package"
 export GHQ_ROOT="${_BASE_HOME}/dev"
-# export GOPATH="${_BASE_OPT}/go/package"
-# export GOBIN="${GOPATH}/bin"
+
+_in_env ${GOPATH} ${PATH} || _prependenv PATH "${GOPATH}/bin"
 
 
 # ---------------------------------------------------------------------------- 
