@@ -35,10 +35,15 @@ source "${_BASE_HOME}/opt/conda/current/etc/profile.d/conda.sh"
 # Take control over go environment by specifying GO paths
 # ----------------------------------------------------------------------------
 export GOROOT="${XDG_APP_HOME}/go/current"
+export GOPATH="${_BASE_OPT}/go/current/package"
+export GOBIN="${_BASE_OPT}/bin"
 export GHQ_ROOT="${_BASE_HOME}/dev"
-# export GOPATH="${_BASE_OPT}/go/package"
-# export GOBIN="${GOPATH}/bin"
 
+
+# ---------------------------------------------------------------------------- 
+# DOCKER
+# ---------------------------------------------------------------------------- 
+export DOCKER_HOST=tcp://localhost:2375
 
 # ---------------------------------------------------------------------------- 
 # FINALIZE
