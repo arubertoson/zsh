@@ -38,6 +38,7 @@ fi
 # ----------------------------------------------------------------------------
 
 source "${ZDOTDIR}/locales/${_BASE_LOCALE}"
+source "${ZDOTDIR}/locales/docker"
 source "${ZDOTDIR}/config.zsh"
 source "${ZDOTDIR}/completions.zsh"
 source "${ZDOTDIR}/keymaps.zsh"
