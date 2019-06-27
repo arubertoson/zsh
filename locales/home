@@ -39,6 +39,19 @@ export GOPATH="${XDG_APP_HOME}/go/current/package"
 export GOBIN="${_BASE_HOME}/bin"
 export GHQ_ROOT="${_BASE_HOME}/dev"
 
+_in_env ${GOPATH} ${PATH} || _prependenv PATH "${GOPATH}/bin"
+
+
+# ---------------------------------------------------------------------------- 
+# DOCKER
+#
+# Export PATH and other variables that needs to be set
+# ---------------------------------------------------------------------------- 
+
+# Check if we are using WSL (meaning we have a windows docker deamon listening)
+if [[ $(uname -r) =~ Microsoft ]]; then
+  export DOCKER_HOST="tcp://localhost:2375"
+fi
 
 # ---------------------------------------------------------------------------- 
 # DOCKER
