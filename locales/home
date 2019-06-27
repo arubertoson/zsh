@@ -35,7 +35,8 @@ source "${_BASE_HOME}/opt/conda/current/etc/profile.d/conda.sh"
 # Take control over go environment by specifying GO paths
 # ----------------------------------------------------------------------------
 export GOROOT="${XDG_APP_HOME}/go/current"
-export GOPATH="${XDG_APP_HOME}/go/package"
+export GOPATH="${XDG_APP_HOME}/go/current/package"
+export GOBIN="${_BASE_HOME}/bin"
 export GHQ_ROOT="${_BASE_HOME}/dev"
 
 _in_env ${GOPATH} ${PATH} || _prependenv PATH "${GOPATH}/bin"
@@ -53,8 +54,20 @@ if [[ $(uname -r) =~ Microsoft ]]; then
 fi
 
 # ---------------------------------------------------------------------------- 
+# DOCKER
+# ---------------------------------------------------------------------------- 
+export DOCKER_HOST=tcp://localhost:2375
+
+# ---------------------------------------------------------------------------- 
 # FINALIZE
 #
 # Export PATH and other variables that needs to be set
 # ---------------------------------------------------------------------------- 
 export PATH
+
+
+# ---------------------------------------------------------------------------- 
+# Hooks
+# ---------------------------------------------------------------------------- 
+
+eval "$(direnv hook zsh)"
