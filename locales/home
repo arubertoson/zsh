@@ -6,7 +6,6 @@
 # Environment variables to set for zsh session
 # ---------------------------------------------------------------------------- 
 export _BASE_ARCHIVES="${XDG_CACHE_HOME}/archives"
-export XDG_APP_HOME="${_BASE_HOME}/opt"
 
 
 # ----------------------------------------------------------------------------
@@ -22,25 +21,33 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 #
 # Take control over go environment by specifying conda paths
 # ----------------------------------------------------------------------------
-export CONDARC="${XDG_CONFIG_HOME}/.condarc"
-export CONDA_PKGS_DIRS="${_BASE_HOME}/.conda/pkgs"
-export CONDA_ENVS_PATH="${_BASE_HOME}/.conda/envs"
 
-source "${_BASE_HOME}/opt/conda/current/etc/profile.d/conda.sh"
+condarc="${XDG_APP_HOME}/conda/current/linux/etc/profile.d/conda.sh"
+if [ -f "${condarc}" ]; then
+  export CONDARC="${XDG_CONFIG_HOME}/.condarc"
+  export CONDA_PKGS_DIRS="${_BASE_HOME}/.conda/pkgs"
+  export CONDA_ENVS_PATH="${_BASE_HOME}/.conda/envs"
 
+  source "${condarc}"
+fi
 
 # ----------------------------------------------------------------------------
 # GO PATHS 
 #
 # Take control over go environment by specifying GO paths
 # ----------------------------------------------------------------------------
-export GOROOT="${XDG_APP_HOME}/go/current"
-export GOPATH="${XDG_APP_HOME}/go/current/package"
-export GOBIN="${_BASE_HOME}/bin"
-export GHQ_ROOT="${_BASE_HOME}/dev"
+if (command -v go > /dev/null); then
+  export GOROOT="${XDG_APP_HOME}/go/current/linux"
+  export GOPATH="${GOROOT}/package"
+  export GOBIN="${_BASE_HOME}/bin"
 
-_in_env ${GOPATH} ${PATH} || _prependenv PATH "${GOPATH}/bin"
+  # GHQ check
+  if (command -v ghq); then
+    export GHQ_ROOT="${_BASE_HOME}/dev"
+  fi
 
+  _in_env ${GOPATH} ${PATH} || _prependenv PATH "${GOPATH}/bin"
+fi
 
 # ---------------------------------------------------------------------------- 
 # DOCKER
@@ -53,10 +60,6 @@ if [[ $(uname -r) =~ Microsoft ]]; then
   export DOCKER_HOST="tcp://localhost:2375"
 fi
 
-# ---------------------------------------------------------------------------- 
-# DOCKER
-# ---------------------------------------------------------------------------- 
-export DOCKER_HOST=tcp://localhost:2375
 
 # ---------------------------------------------------------------------------- 
 # FINALIZE
@@ -69,5 +72,6 @@ export PATH
 # ---------------------------------------------------------------------------- 
 # Hooks
 # ---------------------------------------------------------------------------- 
-
-eval "$(direnv hook zsh)"
+if (command -v direnv > /dev/null); then
+  eval "$(direnv hook zsh)"
+fi
