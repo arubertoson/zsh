@@ -39,7 +39,7 @@ fi
 if (command -v go > /dev/null); then
   export GOROOT="${XDG_APP_HOME}/go/current/linux"
   export GOPATH="${GOROOT}/package"
-  export GOBIN="${_BASE_HOME}/bin"
+  export GOBIN="${XDG_BIN_HOME}"
 
   # GHQ check
   if (command -v ghq); then
