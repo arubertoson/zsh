@@ -24,7 +24,6 @@ export XDG_APP_HOME="${_BASE_HOME}/apps"
 # Move ZDOTDIR to .config to reduce dot file pollution
 export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
-export ZGEN_DIR="$XDG_CACHE_HOME/zgen"
 
 export SHELL=$(command -v zsh)
 export LANG=${LANG:-en_US.UTF-8}

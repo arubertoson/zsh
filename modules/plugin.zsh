@@ -2,6 +2,8 @@
 # Zgen for loading plugins
 # ----------------------------------------------------------------------------
 
+export ZGEN_DIR="$XDG_CACHE_HOME/zgen"
+
 ZGEN_AUTOLOAD_COMPINIT=0
 
 _load_repo tarjoilija/zgen $ZGEN_DIR zgen.zsh
