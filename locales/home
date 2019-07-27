@@ -42,7 +42,7 @@ if (command -v go > /dev/null); then
   export GOBIN="${XDG_BIN_HOME}"
 
   # GHQ check
-  if (command -v ghq); then
+  if (command -v ghq > /dev/null); then
     export GHQ_ROOT="${_BASE_HOME}/dev"
   fi
 

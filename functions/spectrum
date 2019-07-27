@@ -36,3 +36,19 @@ function spectrum_bls() {
     print -P -- "$code: %{$BG[$code]%}$ZSH_SPECTRUM_TEXT%{$reset_color%}"
   done
 }
+
+function spectrum() {
+  case "$1" in
+    ls)
+      spectrum_ls
+      ;;
+    bls)
+      spectrum_bls
+      ;;
+    *)
+      echo "spectrum does not support $1"
+      ;;
+  esac
+}
+
+spectrum $@
