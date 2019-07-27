@@ -18,10 +18,10 @@ rg() {
   fi
 }
 
-cd() {
-# enhancd override
-  _cd "$@"
-}
+# cd() {
+# # enhancd override
+#   _cd "$@"
+# }
 
 
 # ----------------------------------------------------------------------------
@@ -35,7 +35,7 @@ alias ys='yum search'
 alias yiy='sudo yum -y install'
 
 # aliases common to all shells
-alias rg='noglob rg'
+# alias rg='noglob rg'
 alias ..='builtin cd ..'
 alias q=exit
 

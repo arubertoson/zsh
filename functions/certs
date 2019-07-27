@@ -1,0 +1,15 @@
+#!/usr/bin/env zsh
+
+echo "init"
+
+
+getcerts() {
+  output=$(openssl s_client -noout -showcerts -verify 5 -connect $1:$2 < /dev/null)
+  
+  for cert in $(echo $result | grep -Po)
+  for completions.zsh
+  print ${output}
+    # awk '/BEGIN/,/END/{ if(/BEGIN/); print}'
+}
+
+getcerts "$@"

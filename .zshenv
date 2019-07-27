@@ -7,16 +7,12 @@
 # disable globals rcs, we want control of what is in our environment
 unsetopt GLOBAL_RCS
 
-# To get current dir of sourced file use expansion below or "print -P %N"
-fpath=("${${(%):-%N}:A:h}/functions" "${fpath[@]}")
-
-
 # ----------------------------------------------------------------------------
 # Defines runtime environment
 # ----------------------------------------------------------------------------
 
 export _BASE_LOCALE='home'
-export _BASE_HOME="/scratch"
+export _BASE_HOME="/c/scratch"
 
 # Use XDG variables to set our environment
 export XDG_CONFIG_HOME="${HOME}/.config"
@@ -30,12 +26,10 @@ export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
 export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 export ZGEN_DIR="$XDG_CACHE_HOME/zgen"
 
-# XXX: Need to investigate pager a bit 
 export SHELL=$(command -v zsh)
 export LANG=${LANG:-en_US.UTF-8}
-export PAGER=less
-export LESS='-R -i -w -M -z-4'
-export LESSHISTFILE="$XDG_DATA_HOME/lesshst"
+export PAGER='nvim +Man!'
+export MANPAGER='nvim +Man!'
 
 # XXX: Currently not working as expected
 export VISUAL=nvim

@@ -1,3 +1,4 @@
+#!/usr/bin/env zsh
 
 pgsql() {
   docker run --rm -d -p 5432:5432 \
