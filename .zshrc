@@ -10,10 +10,11 @@
 source "${ZDOTDIR}/locales/${_BASE_LOCALE}"
 
 # Autoload Functions
-funcs="${ZDOTDIR}/functions"
+funcs="${ZDOTDIR}/fns"
 # XXX: extract to function
 fpath=("${funcs}" "${fpath[@]}")
-for func in ${funcs}; do
+for func in ${funcs}/*; do
+  echo "${func}"
   autoload -Uz "${func}"
 done
 
@@ -27,7 +28,6 @@ done
 
 # Order is important
 _modules=(
-  "locales"
   "plugin"
   "prompt"
   "keymap"
