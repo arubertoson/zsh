@@ -1,6 +1,24 @@
 #!/usr/bin/env zsh
 
 # ----------------------------------------------------------------------------
+# CUSTOM LOCALE & FUNCTIONS
+#
+# Aliases should be sourced last, otherwise we run the risk of letting other
+# plugins override functionality
+# ----------------------------------------------------------------------------
+
+source "${ZDOTDIR}/locales/${_BASE_LOCALE}"
+
+# Autoload Functions
+funcs="${ZDOTDIR}/functions"
+# XXX: extract to function
+fpath=("${funcs}" "${fpath[@]}")
+for func in ${funcs}; do
+  autoload -Uz "${func}"
+done
+
+
+# ----------------------------------------------------------------------------
 # CUSTOM MODULES
 #
 # Aliases should be sourced last, otherwise we run the risk of letting other
@@ -9,6 +27,7 @@
 
 # Order is important
 _modules=(
+  "locales"
   "plugin"
   "prompt"
   "keymap"
@@ -26,22 +45,6 @@ for m in ${_modules[@]}; do
 done
 
 
-# ----------------------------------------------------------------------------
-# CUSTOM LOCALE & FUNCTIONS
-#
-# Aliases should be sourced last, otherwise we run the risk of letting other
-# plugins override functionality
-# ----------------------------------------------------------------------------
-
-source "${ZDOTDIR}/locales/${_BASE_LOCALE}"
-
-# Autoload Functions
-funcs="${ZDOTDIR}/functions"
-# XXX: extract to function
-fpath=("${funcs}" "${fpath[@]}")
-for func in ${funcs}; do
-  autoload -Uz "${func}"
-done
 
 # ----------------------------------------------------------------------------
 # COLORS, COMPINIT & AUTOPAIR
