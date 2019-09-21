@@ -36,17 +36,6 @@ source "${fzf_base}/shell/key-bindings.zsh"
 # Functions
 # ----------------------------------------------------------------------------
 
-fzf-icat() {
-  image=$( \
-    rg -f * --maxdepth 1 | \
-    map file --mime-type | \
-    rg image | fzf | cut -f1 -d":" \
-  )
-
-  kitty icat ${image}
-}
-
-
 fzf-echo-env() { 
   echo ''
   env | cut -f1 -d"=" | fzf | xargs printenv | tr ":" "\n"
@@ -97,6 +86,17 @@ fzf-change-to-ghq-project() {
   fi
 }
 
+fzf-go-pkgs() {
+  # pkg=$(fd go.mod ${GOPATH} | xargs dirname {} | sort | fzf)
+  pkg=$(fd -a '@v(\d+\.)?(\d+\.)?(\*|\d+)$' ${GOPATH} | fzf)
+
+  if [ -n ${pkg} ]; then
+    BUFFER="cd ${pkg}"
+    zle accept-line
+    zle reset-prompt
+  fi
+}
+
 # Expose zle functions
 zle -N fzf-icat
 zle -N fzf-echo-env
@@ -104,6 +104,7 @@ zle -N fzf-select-job
 zle -N fzf-insert-history
 zle -N fzf-change-directory
 zle -N fzf-change-to-ghq-project
+zle -N fzf-go-pkgs
 
 # ----------------------------------------------------------------------------
 # Key Maps
@@ -117,10 +118,12 @@ bindkey "^@p" fzf-echo-env
 bindkey "^@t" fzf-change-directory
 bindkey '^@h' fzf-insert-history
 
+bindkey "^@rg" fzf-go-pkgs
+
 
 # Fzf-widget plugin
 if [ -n "$(declare -fF fzf-select-widget)" ]; then
-  bindkey '^@r' fzf-select-widget
+  # bindkey '^@r' fzf-select-widget
   bindkey '^@f' fzf-edit-files
 
   bindkey '^@ga' fzf-git-add-files
