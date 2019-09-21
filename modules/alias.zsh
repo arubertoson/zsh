@@ -3,26 +3,16 @@
 autoload -U zmv
 
 # ----------------------------------------------------------------------------
-# Alias Functions
+# Functions
 # ----------------------------------------------------------------------------
 
-rg() {
-# the -f flag now behaves like a glob by default
-#   usage:
-#     "rg -f **/*.zsh"
-#   
-  if [ ! -z "$1" ] && [ $1 == '-f' ];then
-    command rg -g "${@:2}" --files --hidden
-  else
-    command rg "$@"
-  fi
+export DOCKER_REPO_PREFIX=arubertoson
+
+imaya() {
+  docker run -it --rm \
+    --name imayapy \
+    ${DOCKER_REPO_PREFIX}/maya -m IPython
 }
-
-# cd() {
-# # enhancd override
-#   _cd "$@"
-# }
-
 
 # ----------------------------------------------------------------------------
 # aliases
@@ -35,7 +25,6 @@ alias ys='yum search'
 alias yiy='sudo yum -y install'
 
 # aliases common to all shells
-# alias rg='noglob rg'
 alias ..='builtin cd ..'
 alias q=exit
 
