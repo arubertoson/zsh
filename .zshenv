@@ -27,8 +27,9 @@ export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 
 export SHELL=$(command -v zsh)
 export LANG=${LANG:-en_US.UTF-8}
-export PAGER='nvim +Man!'
-export MANPAGER='nvim +Man!'
+export PAGER="page -q 90000"
+# export MANPAGER='nvim +Man!'
+export MANPAGER="page -C -e 'au User PageDisconnect sleep 100m|%y p|enew! |bd! #|pu p|set ft=man'"
 
 # XXX: Currently not working as expected
 export VISUAL=nvim
