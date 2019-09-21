@@ -14,7 +14,6 @@ funcs="${ZDOTDIR}/fns"
 # XXX: extract to function
 fpath=("${funcs}" "${fpath[@]}")
 for func in ${funcs}/*; do
-  echo "${func}"
   autoload -Uz "${func}"
 done
 
