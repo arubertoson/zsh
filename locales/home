@@ -25,7 +25,7 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 # Take control over go environment by specifying conda paths
 # ----------------------------------------------------------------------------
 
-condarc="${XDG_APP_HOME}/conda/current/linux/etc/profile.d/conda.sh"
+condarc="${XDG_APP_HOME}/conda/etc/profile.d/conda.sh"
 if [ -f "${condarc}" ]; then
   export CONDARC="${XDG_CONFIG_HOME}/.condarc"
   export CONDA_PKGS_DIRS="${_BASE_HOME}/.conda/pkgs"
@@ -40,7 +40,7 @@ fi
 # Take control over go environment by specifying GO paths
 # ----------------------------------------------------------------------------
 if (command -v go > /dev/null); then
-  export GOROOT="${XDG_APP_HOME}/go/current/linux"
+  export GOROOT="${XDG_APP_HOME}/go/current"
   export GOPATH="${XDG_CACHE_HOME}/go"
   export GOBIN="${XDG_BIN_HOME}"
 
