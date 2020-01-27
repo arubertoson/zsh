@@ -12,13 +12,13 @@ unsetopt GLOBAL_RCS
 # ----------------------------------------------------------------------------
 
 export _BASE_LOCALE='home'
-export _BASE_HOME="/c/scratch"
+export _BASE_HOME="/scratch"
 
 # Use XDG variables to set our environment
 export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_CACHE_HOME="${_BASE_HOME}/.cache/linux"
-export XDG_BIN_HOME="${_BASE_HOME}/global/linux/bin"
-export XDG_DATA_HOME="${_BASE_HOME}/global/linux/share"
+export XDG_CACHE_HOME="${_BASE_HOME}/.cache"
+export XDG_BIN_HOME="${_BASE_HOME}/bin"
+export XDG_DATA_HOME="${_BASE_HOME}/share"
 export XDG_APP_HOME="${_BASE_HOME}/apps"
 
 # Move ZDOTDIR to .config to reduce dot file pollution
@@ -27,9 +27,9 @@ export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
 
 export SHELL=$(command -v zsh)
 export LANG=${LANG:-en_US.UTF-8}
-export PAGER="page -q 90000"
+# export PAGER="page -q 90000"
 # export MANPAGER='nvim +Man!'
-export MANPAGER="page -C -e 'au User PageDisconnect sleep 100m|%y p|enew! |bd! #|pu p|set ft=man'"
+# export MANPAGER="page -C -e 'au User PageDisconnect sleep 100m|%y p|enew! |bd! #|pu p|set ft=man'"
 
 # XXX: Currently not working as expected
 export VISUAL=nvim
