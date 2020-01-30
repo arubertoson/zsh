@@ -29,6 +29,7 @@ done
 _modules=(
   "plugin"
   "prompt"
+  "config"
   "keymap"
   "fzf"
   "docker"
