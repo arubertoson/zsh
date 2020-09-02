@@ -44,12 +44,13 @@ if (command -v go > /dev/null); then
   export GOPATH="${XDG_CACHE_HOME}/go"
   export GOBIN="${XDG_BIN_HOME}"
 
-  # GHQ check
-  if (command -v ghq > /dev/null); then
-    export GHQ_ROOT="${_BASE_HOME}/dev"
-  fi
 
   # _in_env ${GOPATH} ${PATH} || _prependenv PATH "${GOPATH}/bin"
+fi
+
+# GHQ check
+if (command -v ghq > /dev/null); then
+  export GHQ_ROOT="${_BASE_HOME}/dev"
 fi
 
 # ---------------------------------------------------------------------------- 
