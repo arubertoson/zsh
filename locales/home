@@ -20,6 +20,17 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
 
 # ----------------------------------------------------------------------------
+# PYENV PATHS 
+#
+# Take control over go environment by specifying conda paths
+# ----------------------------------------------------------------------------
+
+export PYENV_ROOT="${XDG_APP_HOME}/pyenv"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+
+eval "$(pyenv init -)"
+
+# ----------------------------------------------------------------------------
 # CONDA PATHS 
 #
 # Take control over go environment by specifying conda paths
