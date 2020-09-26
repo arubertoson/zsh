@@ -12,6 +12,17 @@ export _BASE_ARCHIVES="${XDG_CACHE_HOME}/archives"
 
 
 # ----------------------------------------------------------------------------
+# PYENV PATHS 
+#
+# Python development paths
+# ----------------------------------------------------------------------------
+
+export PYENV_ROOT="${XDG_APP_HOME}/pyenv"
+export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+
+eval "$(${XDG_APP_HOME}/pyenv/bin/pyenv init -)"
+
+# ----------------------------------------------------------------------------
 # PATHS
 #
 # Specify paths for user environment
@@ -19,16 +30,6 @@ export _BASE_ARCHIVES="${XDG_CACHE_HOME}/archives"
 _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
 
-# ----------------------------------------------------------------------------
-# PYENV PATHS 
-#
-# Take control over go environment by specifying conda paths
-# ----------------------------------------------------------------------------
-
-export PYENV_ROOT="${XDG_APP_HOME}/pyenv"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-
-eval "$(pyenv init -)"
 
 # ----------------------------------------------------------------------------
 # CONDA PATHS 
