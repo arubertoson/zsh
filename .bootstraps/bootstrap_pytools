@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# Global pointer to virtual environment storage
+export WORKON_HOME="${XDG_CACHE_HOME}/venvs"
+
 # ------------------------------------------------------------------------------ 
 # Pyenv
 # ------------------------------------------------------------------------------ 
@@ -7,7 +10,7 @@ export PYENV_ROOT="${XDG_APP_HOME}/pyenv"
 export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
 # Ensure pyenv is available on path
-_in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${PYENV_ROOT}/bin"
+_in_env ${PYENV_ROOT}/bin ${PATH} || _prependenv PATH "${PYENV_ROOT}/bin"
 
 if (! command -v pyenv > /dev/null); then
     if [ ! -d "${PYENV_ROOT}" ]; then
@@ -18,7 +21,14 @@ if (! command -v pyenv > /dev/null); then
     # Latest
     PYENV_ILDIR=${PYENV_ROOT}/plugins/pyenv-install-latest 
     if [ ! -d "${PYENV_ILDIR}" ]; then
-        git clone https://github.com/momo-lab/pyenv-install-latest.git ${PYENV_ILDIR}/
+        git clone https://github.com/momo-lab/pyenv-install-latest.git ${PYENV_ILDIR}
+    fi
+    cd ${PYENV_ILDIR} && git pull
+
+    # Virtualenv
+    PYENV_VE=${PYENV_ROOT}/plugins/pyenv-virtualenv
+    if [ ! -d "${PYENV_VE}" ]; then
+        git clone https://github.com/pyenv/pyenv-virtualenv.git ${PYENV_VE}
     fi
     cd ${PYENV_ILDIR} && git pull
 
@@ -49,7 +59,7 @@ export PYTHONPATH=${PYTHONPATH}:${PIPX_SITE}
 
 _in_env ${PIPX_SITE} ${PYTHONPATH} || _prependenv PYTHONPATH ${PIPX_SITE}
 
-if ! command -v pipx > /dev/null; then
+if ( ! command -v pipx &> /dev/null ); then
     python3 -m pip install -U pip setuptools
     python3 -m pip install --prefix=${XDG_APP_HOME}/pipx --ignore-installed pipx
 
