@@ -10,6 +10,7 @@ export NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
 # ---------------------------------------------------------------------------- 
 export _BASE_ARCHIVES="${XDG_CACHE_HOME}/archives"
 
+_in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
 # ----------------------------------------------------------------------------
 # Python Development Environment
@@ -17,31 +18,6 @@ export _BASE_ARCHIVES="${XDG_CACHE_HOME}/archives"
 BASE_PYTHON_VERSION=3.8
 
 source ${ZDOTDIR}/.bootstraps/bootstrap_pytools
-
-
-# ----------------------------------------------------------------------------
-# PATHS
-#
-# Specify paths for user environment
-# ----------------------------------------------------------------------------
-_in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
-
-
-
-# ----------------------------------------------------------------------------
-# CONDA PATHS 
-#
-# Take control over go environment by specifying conda paths
-# ----------------------------------------------------------------------------
-
-condarc="${XDG_APP_HOME}/conda/etc/profile.d/conda.sh"
-if [ -f "${condarc}" ]; then
-  export CONDARC="${XDG_CONFIG_HOME}/.condarc"
-  export CONDA_PKGS_DIRS="${_BASE_HOME}/.conda/pkgs"
-  export CONDA_ENVS_PATH="${_BASE_HOME}/.conda/envs"
-
-  source "${condarc}"
-fi
 
 # ----------------------------------------------------------------------------
 # GO PATHS 
