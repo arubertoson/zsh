@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+# Make sure git is installted
+
+# Install pyenv
+
+# Dependencies
+
+# Ubuntu
+sudo apt -y update && sudo apt -y upgrade && sudo apt install -y \
+    build-essential \
+    libssl-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    wget \
+    curl \
+    llvm \
+    libncurses5-dev \
+    libncursesw5-dev \
+    xz-utils \
+    tk-dev \
+    libffi-dev \
+    liblzma-dev \
+    python-openssl \
+    git
+
+# CentOS
+# sudo yum -y update && sudo yum upgrade -y && sudo yum install -y \
+#     @development \
+#     zlib-devel \
+#     bzip2 \
+#     bzip2-devel \
+#     readline-devel \
+#     sqlite \
+#     sqlite-devel \
+#     openssl-devel \
+#     xz \
+#     xz-devel \
+#     libffi-devel \
+#     findutil
+
