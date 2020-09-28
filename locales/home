@@ -12,15 +12,12 @@ export _BASE_ARCHIVES="${XDG_CACHE_HOME}/archives"
 
 
 # ----------------------------------------------------------------------------
-# PYENV PATHS 
-#
-# Python development paths
+# Python Development Environment
 # ----------------------------------------------------------------------------
+BASE_PYTHON_VERSION=3.8
 
-export PYENV_ROOT="${XDG_APP_HOME}/pyenv"
-export PYENV_VIRTUALENV_DISABLE_PROMPT=1
+source ${ZDOTDIR}/.bootstraps/bootstrap_pytools
 
-eval "$(${XDG_APP_HOME}/pyenv/bin/pyenv init -)"
 
 # ----------------------------------------------------------------------------
 # PATHS
