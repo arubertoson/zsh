@@ -59,6 +59,8 @@ fi
 # ---------------------------------------------------------------------------- 
 # FINALIZE
 #
-# Export PATH and other variables that needs to be set
+# Cleanup PATH
 # ---------------------------------------------------------------------------- 
+_pathclean PATH
+
 export PATH

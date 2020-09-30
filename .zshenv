@@ -84,3 +84,12 @@ function _appendenv() {
 function _prependenv() {
   export $1="$2:$(printenv $1)"
 }
+
+
+function _pathclean() {
+  export $1=$(printenv $1) | sed 's/:/\n/g' | uniq | tr "\n" ":"
+}
+
+function _git_pull() {
+  cd $1 && git pull && cd -
+}
