@@ -40,6 +40,10 @@ export EDITOR="${VISUAL}"
 # Custom Functions
 # ----------------------------------------------------------------------------
 
+function _drop_cache {
+    sudo su -c "sync; sudo echo 3 > /proc/sys/vm/drop_caches; sudo touch /root/drop_caches_last_run"
+}
+
 function _is_callable {
     for cmd in "$@"; do
         command -v "$cmd" >/dev/null || return 1
