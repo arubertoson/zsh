@@ -63,6 +63,7 @@ fi
 # PipX
 # ------------------------------------------------------------------------------ 
 
+export PIPX_LOADED=1
 if [[ -z "${PIPX_LOADED}" ]];
 then
     export PIPX_ROOT=${XDG_APP_HOME}/pipx
