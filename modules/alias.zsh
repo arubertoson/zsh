@@ -49,3 +49,6 @@ alias map="xargs -n1"
 # Wrapping for terminal
 alias wrap='tput rmam'
 alias nowrap='tput smam'
+
+# https://github.com/pypa/pipenv/issues/1929#issuecomment-609848370
+# alias env VIRTUALENV_COPIES=1 pipenv install
