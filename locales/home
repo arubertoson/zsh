@@ -12,12 +12,13 @@ export _BASE_ARCHIVES="${XDG_CACHE_HOME}/archives"
 
 _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
+# NOTE: tooling will be taken over by nix
 # ----------------------------------------------------------------------------
 # Python Development Environment
 # ----------------------------------------------------------------------------
-BASE_PYTHON_VERSION=3.8
+# BASE_PYTHON_VERSION=3.8
 
-source ${ZDOTDIR}/.bootstraps/bootstrap_pytools
+# source ${ZDOTDIR}/.bootstraps/bootstrap_pytools
 
 # ----------------------------------------------------------------------------
 # GO PATHS 
