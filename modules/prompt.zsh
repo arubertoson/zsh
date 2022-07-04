@@ -149,6 +149,11 @@ prompt_init(){
     _rez=('%F{242}${REZ_ENV_PROMPT}${REZ_USED_REQUEST}%f')
   fi
 
+  # TODO: Setup taskwarrior nag prompt
+  # task +READY +DUETODAY count
+  # task +READY +TOMORROW count
+  # task +READY +urgency > 10 count -gt "0" -> some symbol
+
   # Need to give the PROMPT a starting point
   PROMPT="${_rez:-}${(j..)_uname:- }"'%(?.%F{green}.%F{red})${PROMPT_SYMBOL:-$VIISYM }%f'
 }

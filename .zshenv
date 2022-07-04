@@ -31,9 +31,16 @@ export LANG=${LANG:-en_US.UTF-8}
 # export MANPAGER='nvim +Man!'
 # export MANPAGER="page -C -e 'au User PageDisconnect sleep 100m|%y p|enew! |bd! #|pu p|set ft=man'"
 
-# XXX: Currently not working as expected
-export VISUAL=nvim
-export EDITOR="${VISUAL}"
+if command -v "nvr" &>/dev/null && [ -n "${NVIM_LISTEN_ADDRESS}" ]; then
+    alias nvim=nvr -cc split --remote-wait +'set bufhidden=wipe'
+
+    export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+    export EDITOR="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+else
+    # XXX: Currently not working as expected
+    export VISUAL=nvim
+    export EDITOR=nvim
+fi
 
 
 # ----------------------------------------------------------------------------
@@ -97,3 +104,7 @@ function _pathclean() {
 function _git_pull() {
   cd $1 && git pull && cd -
 }
+
+# NIX
+if [ -e "/home/${USER}/.nix-profile/etc/profile.d/nix.sh ]; then . /home/${USER}/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+export NIX_PATH=${NIX_PATH:+$NIX_PATH:}$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels
