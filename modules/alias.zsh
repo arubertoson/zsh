@@ -18,6 +18,8 @@ imaya() {
 # aliases
 # ----------------------------------------------------------------------------
 
+alias simple-nvim='XDG_CONFIG_HOME="~/.config/nvim-simple" XDG_DATA_HOME="$XDG_CACHE_PATH/nvim-simple" nvim'
+
 alias sudoenv='sudo env "PATH=$PATH"'
 
 alias yi='sudo yum install'
