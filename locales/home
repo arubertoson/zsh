@@ -36,7 +36,7 @@ fi
 
 # GHQ check
 if (command -v ghq > /dev/null); then
-  export GHQ_ROOT="${_BASE_HOME}/dev"
+  export GHQ_ROOT="${HOME}/dev"
 fi
 
 # ---------------------------------------------------------------------------- 

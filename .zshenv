@@ -12,14 +12,14 @@ unsetopt GLOBAL_RCS
 # ----------------------------------------------------------------------------
 
 export _BASE_LOCALE='home'
-export _BASE_HOME="/scratch"
+# export _BASE_HOME="${HOME}/.local"
 
 # Use XDG variables to set our environment
 export XDG_CONFIG_HOME="${HOME}/.config"
-# export XDG_CACHE_HOME="${_BASE_HOME}/.cache"
-# export XDG_BIN_HOME="${_BASE_HOME}/bin"
-# export XDG_DATA_HOME="${_BASE_HOME}/share"
-# export XDG_APP_HOME="${_BASE_HOME}/package"
+export XDG_CACHE_HOME="${HOME}/.cache"
+export XDG_BIN_HOME="${_BASE_HOME}/bin"
+export XDG_DATA_HOME="${_BASE_HOME}/share"
+export XDG_APP_HOME="${_BASE_HOME}/package"
 
 # Move ZDOTDIR to .config to reduce dot file pollution
 export ZDOTDIR=$(realpath "$XDG_CONFIG_HOME/zsh")
