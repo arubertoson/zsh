@@ -18,6 +18,15 @@ imaya() {
 # aliases
 # ----------------------------------------------------------------------------
 
+# Googler custom searches
+alias googler="ddgr" #Cli quick googler search
+alias @g='googler -x -n 4 $@'
+alias @w='googler -x -n 4 -w en.wikipedia.org $@'
+alias @rd='googler -x -n 4 --url-handler ttrv -w reddit.com "$@"'
+alias @y='googler -r "us-en" -n 4 --url-handler mpv -w youtube.com "$@"'
+alias @git='googler -n 4 -w github.com $@'
+alias @so='so $@'
+
 alias simple-nvim='XDG_CONFIG_HOME="~/.config/nvim-simple" XDG_DATA_HOME="$XDG_CACHE_PATH/nvim-simple" nvim'
 
 alias sudoenv='sudo env "PATH=$PATH"'
