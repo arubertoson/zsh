@@ -16,10 +16,10 @@ export _BASE_HOME="/scratch"
 
 # Use XDG variables to set our environment
 export XDG_CONFIG_HOME="${HOME}/.config"
-export XDG_CACHE_HOME="${_BASE_HOME}/.cache"
-export XDG_BIN_HOME="${_BASE_HOME}/bin"
-export XDG_DATA_HOME="${_BASE_HOME}/share"
-export XDG_APP_HOME="${_BASE_HOME}/package"
+# export XDG_CACHE_HOME="${_BASE_HOME}/.cache"
+# export XDG_BIN_HOME="${_BASE_HOME}/bin"
+# export XDG_DATA_HOME="${_BASE_HOME}/share"
+# export XDG_APP_HOME="${_BASE_HOME}/package"
 
 # Move ZDOTDIR to .config to reduce dot file pollution
 export ZDOTDIR=$(realpath "$XDG_CONFIG_HOME/zsh")
@@ -106,5 +106,5 @@ function _git_pull() {
 }
 
 # NIX
-if [ -e "/home/${USER}/.nix-profile/etc/profile.d/nix.sh ]; then . /home/${USER}/.nix-profile/etc/profile.d/nix.sh; fi # added by Nix installer
+if [ -e "/home/${USER}/.nix-profile/etc/profile.d/nix.sh" ]; then . "/home/${USER}/.nix-profile/etc/profile.d/nix.sh"; fi # added by Nix installer
 export NIX_PATH=${NIX_PATH:+$NIX_PATH:}$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels
