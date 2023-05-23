@@ -35,6 +35,7 @@ _modules=(
   "docker"
   "alias"
   "completion"
+  "ssh"
 )
 # XXX: extract to function
 for m in ${_modules[@]}; do
