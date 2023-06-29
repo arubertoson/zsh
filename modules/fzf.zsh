@@ -28,8 +28,8 @@ fi
 
 # Source stuff
 fzf_base=$(dirname $(realpath $(which fzf)))/..
-source "${fzf_base}/share/fzf/completion.zsh"
-source "${fzf_base}/share/fzf/key-bindings.zsh"
+source "${fzf_base}/shell/completion.zsh"
+source "${fzf_base}/shell/key-bindings.zsh"
 
 
 # ----------------------------------------------------------------------------
