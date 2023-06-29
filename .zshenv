@@ -105,6 +105,3 @@ function _git_pull() {
   cd $1 && git pull && cd -
 }
 
-# NIX
-if [ -e "/home/${USER}/.nix-profile/etc/profile.d/nix.sh" ]; then . "/home/${USER}/.nix-profile/etc/profile.d/nix.sh"; fi # added by Nix installer
-export NIX_PATH=${NIX_PATH:+$NIX_PATH:}$HOME/.nix-defexpr/channels:/nix/var/nix/profiles/per-user/root/channels

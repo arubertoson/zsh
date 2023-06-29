@@ -17,8 +17,7 @@ _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 # Python Development Environment
 # ----------------------------------------------------------------------------
 # BASE_PYTHON_VERSION=3.8
-
-# source ${ZDOTDIR}/.bootstraps/bootstrap_pytools
+source ${ZDOTDIR}/.bootstraps/bootstrap_pytools
 
 # ----------------------------------------------------------------------------
 # GO PATHS 

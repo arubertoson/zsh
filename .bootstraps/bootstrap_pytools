@@ -28,15 +28,15 @@ then
         fi
         _git_pull ${PYENV_INSTALL_LATEST}
 
-        # Virtualenv
-        PYENV_VIRTUAL_ENV=${PYENV_ROOT}/plugins/pyenv-virtualenv
-        if [ ! -d "${PYENV_VIRUTAL_ENV}" ]; then
-            git clone https://github.com/pyenv/pyenv-virtualenv.git ${PYENV_VIRUTAL_ENV}
-        fi
-        _git_pull ${PYENV_VIRTUAL_ENV}
 
         # Create symmlink to global bin
         ln -sf ${PYENV_ROOT}/bin/pyenv ${XDG_BIN_HOME}
+    fi
+
+    # Virtualenv
+    export PYENV_VIRUTALENV_PLUGIN_PATH="${PYENV_ROOT}/plugins/pyenv-virtualenv"
+    if [ -d "${PYENV_VIRTUALENV_PLUGIN_PATH}" ]; then
+        git clone https://github.com/pyenv/pyenv-virtualenv.git 
     fi
 
     # Pyenv need to setup it's own environment, we can achieve this by running the
@@ -107,7 +107,7 @@ then
 
     if (! command pipenv &> /dev/null); 
     then
-        pipx install pipenv
+        echo "pipenv is not installed"
     fi
 
     export PIPENV_LOADED=1
