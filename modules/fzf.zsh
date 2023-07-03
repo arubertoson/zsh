@@ -26,11 +26,6 @@ if (command -v fd &> /dev/null); then
   export FZF_ALT_C_COMMAND="fd -HI --type directory"
 fi
 
-# Source stuff
-fzf_base=$(dirname $(realpath $(which fzf)))/..
-source "${fzf_base}/shell/completion.zsh"
-source "${fzf_base}/shell/key-bindings.zsh"
-
 
 # ----------------------------------------------------------------------------
 # Functions
@@ -74,13 +69,10 @@ fzf-insert-history() {
 
 
 fzf-change-to-ghq-project() {
-  proj=$(ghq list \
-    | sort \
-    | fzf
-  )
+  proj=$(fd -t d -H -g '**/.git' ${_DEV_HOME} | sed 's|/.git$||' | sort | fzf)
 
   if [ -n ${proj} ];then
-    BUFFER="cd ${GHQ_ROOT}/${proj}"
+    BUFFER="cd ${proj}"
     zle accept-line
     zle reset-prompt
   fi

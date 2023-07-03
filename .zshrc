@@ -31,9 +31,9 @@ _modules=(
   "prompt"
   "config"
   "keymap"
+  "alias"
   "fzf"
   "docker"
-  "alias"
   "completion"
   "ssh"
 )
