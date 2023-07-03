@@ -6,25 +6,39 @@
 
 # Dependencies
 
-# Ubuntu
+# # Ubuntu
+# sudo apt -y update && sudo apt -y upgrade && sudo apt install -y \
+#     build-essential \
+#     libssl-dev \
+#     zlib1g-dev \
+#     libbz2-dev \
+#     libreadline-dev \
+#     libsqlite3-dev \
+#     wget \
+#     curl \
+#     llvm \
+#     libncurses5-dev \
+#     libncursesw5-dev \
+#     xz-utils \
+#     tk-dev \
+#     libffi-dev \
+#     liblzma-dev \
+#     git
+#     #python-openssl \
+
 sudo apt -y update && sudo apt -y upgrade && sudo apt install -y \
     build-essential \
-    libssl-dev \
-    zlib1g-dev \
-    libbz2-dev \
     libreadline-dev \
-    libsqlite3-dev \
-    wget \
-    curl \
-    llvm \
     libncurses5-dev \
-    libncursesw5-dev \
-    xz-utils \
+    libssl-dev \
+    libsqlite3-dev \
     tk-dev \
+    libgdbm-dev \
+    libc6-dev \
+    libbz2-dev \
     libffi-dev \
     liblzma-dev \
-    git
-    #python-openssl \
+    zlib1g-dev
 
 # CentOS
 # sudo yum -y update && sudo yum upgrade -y && sudo yum install -y \
