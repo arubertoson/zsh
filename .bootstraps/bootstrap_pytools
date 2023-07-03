@@ -12,14 +12,18 @@ then
     export PYENV_ROOT="${XDG_APP_HOME}/pyenv"
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
 
+    echo "Setting up pyenv"
+
     # If we don't have pyenv available at this point we are missing it and need to
     # perform the install. The following block pulls down the necessary repos and
     # make the pyenv exec available on paht.
     if (! command -v pyenv > /dev/null); then
+	echo "Pyenv is not installed, installing latest"
+
         if [ ! -d "${PYENV_ROOT}" ]; then
             git clone https://github.com/pyenv/pyenv.git ${PYENV_ROOT}
         fi
-        _git_pull ${PYENV_ROOT}
+        _git_pull ${PYENV_ROOT} > /dev/null
 
         # Latest
         PYENV_INSTALL_LATEST=${PYENV_ROOT}/plugins/pyenv-install-latest 
@@ -28,22 +32,21 @@ then
         fi
         _git_pull ${PYENV_INSTALL_LATEST}
 
-
-        # Create symmlink to global bin
-        ln -sf ${PYENV_ROOT}/bin/pyenv ${XDG_BIN_HOME}
+        # Installing necessary packages to build python from source and if successful 
+        # we finalize the install by linking the pyenv executable
+        $(dirname "$0")/bootstrap_python && ln -sf ${PYENV_ROOT}/bin/pyenv ${XDG_BIN_HOME}/pyenv
     fi
 
     # Virtualenv
-    export PYENV_VIRUTALENV_PLUGIN_PATH="${PYENV_ROOT}/plugins/pyenv-virtualenv"
-    if [ -d "${PYENV_VIRTUALENV_PLUGIN_PATH}" ]; then
-        git clone https://github.com/pyenv/pyenv-virtualenv.git 
+    export PYENV_VIRTUALENV_PLUGIN_PATH="${PYENV_ROOT}/plugins/pyenv-virtualenv"
+    if [ ! -d "${PYENV_VIRTUALENV_PLUGIN_PATH}" ]; then
+        git clone https://github.com/pyenv/pyenv-virtualenv.git ${PYENV_VIRTUALENV_PLUGIN_PATH}
     fi
 
     # Pyenv need to setup it's own environment, we can achieve this by running the
     # below. To avoid overrideing other envs we don't want to run this in subshells
     # that enherit our current environment
     _in_env ${PYENV_ROOT}/shims ${PATH} || eval "$(${XDG_APP_HOME}/pyenv/bin/pyenv init -)"
-
 
     # We want to stay up to date with the patch version of python, this is achieved
     # by comparing the latest to the current version. If we find a newer we install
@@ -58,43 +61,6 @@ then
 
     export PYENV_LOADED=1
 fi
-
-# ------------------------------------------------------------------------------ 
-# PipX
-# ------------------------------------------------------------------------------ 
-
-export PIPX_LOADED=1
-if [[ -z "${PIPX_LOADED}" ]];
-then
-    export PIPX_ROOT=${XDG_APP_HOME}/pipx
-    export PIPX_SITE=${XDG_APP_HOME}/pipx/lib/python3.8/site-packages
-    export PIPX_HOME=${XDG_CACHE_HOME}
-    export PIPX_BIN_DIR=${XDG_BIN_HOME}
-
-    # Since we install pipx in a custom location we have to tell the python
-    # interpreter where to look for the pipx modules
-    export PYTHONPATH=${PYTHONPATH}:${PIPX_SITE}
-
-    _in_env ${PIPX_SITE} ${PYTHONPATH} || _prependenv PYTHONPATH ${PIPX_SITE}
-
-    # If the pipx command is not available to use we need to install it
-    if ( ! command -v pipx &> /dev/null ); then
-        python3 -m pip install -U pip setuptools
-        python3 -m pip install --prefix=${PIPX_ROOT} --ignore-installed pipx
-
-        ln -sf ${PIPX_ROOT}/bin/pipx ${XDG_BIN_HOME}
-
-        pipx ensurepath
-        if [ ! $? -eq 0 ]; then
-            echo "Pipx install failed."
-        fi
-    fi
-
-    export PIPX_LOADED=1
-fi
-
-
-
 
 # ------------------------------------------------------------------------------ 
 # Pipenv

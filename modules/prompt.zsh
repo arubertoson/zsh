@@ -75,8 +75,13 @@ _hook_precmd() {
   # Set title
   if [[ -n $_vcs_info[top] ]]; then
     _set_title 'ignore-escape' "git:$(basename $_vcs_info[top])-$_vcs_info[branch]"
-  # else     
-  #   _set_title 'expand-prompt' '%~'
+  fi
+
+  # Check for Python virtual environment and set _venv
+  if [[ -n $VIRTUAL_ENV ]]; then
+    _venv="%F{242}$(basename $VIRTUAL_ENV) %f"
+  else
+    _venv=''
   fi
 
   # Render rprompt when necessary information is configured
@@ -155,7 +160,7 @@ prompt_init(){
   # task +READY +urgency > 10 count -gt "0" -> some symbol
 
   # Need to give the PROMPT a starting point
-  PROMPT="${_rez:-}${(j..)_uname:- }"'%(?.%F{green}.%F{red})${PROMPT_SYMBOL:-$VIISYM }%f'
+  PROMPT="${_rez:-}${(j..)_uname:- }"'${_venv:-}%(?.%F{green}.%F{red})${PROMPT_SYMBOL:-$VIISYM }%f'
 }
 
 
