@@ -13,6 +13,7 @@ unsetopt GLOBAL_RCS
 
 export _BASE_LOCALE='home'
 export _BASE_HOME="${HOME}/.local"
+export _DEV_HOME="${HOME}/dev"
 
 # Use XDG variables to set our environment
 export XDG_CONFIG_HOME="${HOME}/.config"
