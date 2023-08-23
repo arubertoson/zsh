@@ -1,7 +1,10 @@
 #!/usr/bin/env zsh
 
+# Setup distribution
+source ${ZDOTDIR}/.bootstraps/bootstrap_ubuntu
+
 # Certificate
-export NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
+# export NODE_EXTRA_CA_CERTS=/etc/ssl/certs/ca-certificates.crt
 
 # ---------------------------------------------------------------------------- 
 # ENVS
@@ -12,7 +15,7 @@ export _BASE_ARCHIVES="${XDG_CACHE_HOME}/archives"
 
 _in_env ${XDG_BIN_HOME} ${PATH} || _prependenv PATH "${XDG_BIN_HOME}"
 
-# NOTE: tooling will be taken over by nix
+# NOTE: tooling will be taken over by nix... eventually
 # ----------------------------------------------------------------------------
 # Python Development Environment
 # ----------------------------------------------------------------------------
@@ -29,10 +32,8 @@ if (command -v go > /dev/null); then
   export GOPATH="${XDG_CACHE_HOME}/go"
   export GOBIN="${XDG_BIN_HOME}"
 
-
   # _in_env ${GOPATH} ${PATH} || _prependenv PATH "${GOPATH}/bin"
 fi
-
 
 # ---------------------------------------------------------------------------- 
 # FINALIZE
