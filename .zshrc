@@ -59,3 +59,7 @@ eval "$(dircolors ${ZDOTDIR}/.dircolors)"
 
 autoload -Uz compinit && \
    compinit -C -d $XDG_CACHE_HOME/zcompdump
+
+# FIX: VOLTA BELONGS TO THE NODE TOOLCHAIN AND NEEDS A NEW SPACE
+export VOLTA_HOME="$HOME/.local/package/volta"
+export PATH="$VOLTA_HOME/bin:$PATH"
