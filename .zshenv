@@ -43,7 +43,6 @@ else
     export EDITOR=nvim
 fi
 
-
 # ----------------------------------------------------------------------------
 # Custom Functions
 # ----------------------------------------------------------------------------
@@ -58,11 +57,9 @@ function _is_callable {
     done
 }
 
-
 function _load_repo {
-    _get_repo "$1" "$2" && source "$2/$3" || >&2 echo "Failed to load $1"
+    _get_repo "$1" "$2" && source "$2/$3" || echo >&2 "Failed to load $1"
 }
-
 
 function _get_repo {
     local target=$1
@@ -73,36 +70,38 @@ function _get_repo {
     fi
 }
 
-
 function _cache_clear {
-    command rm -rfv $XDG_CACHE_HOME/${SHELL##*/}/*;
+    command rm -rfv $XDG_CACHE_HOME/${SHELL##*/}/*
 }
-
 
 function _in_env() {
-  if [[ ":$2:" == *":$1:"* ]]; then
-      return 0
-  else
-      return 1
-  fi
+    if [[ ":$2:" == *":$1:"* ]]; then
+        return 0
+    else
+        return 1
+    fi
 }
-
 
 function _appendenv() {
-  export $1="$(printenv $1):$2"
+    export $1="$(printenv $1):$2"
 }
-
 
 function _prependenv() {
-  export $1="$2:$(printenv $1)"
+    export $1="$2:$(printenv $1)"
 }
 
-
 function _pathclean() {
-  export $1=$(printenv $1) | sed 's/:/\n/g' | uniq | tr "\n" ":"
+    export $1=$(printenv $1) | sed 's/:/\n/g' | uniq | tr "\n" ":"
 }
 
 function _git_pull() {
-  cd $1 && git pull && cd -
+    cd $1 && git pull && cd -
 }
 
+function _is_wsl() {
+    if grep -q 'microsoft' /proc/version; then
+        return 0 # True
+    else
+        return 1 # False
+    fi
+}
