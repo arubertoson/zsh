@@ -17,7 +17,6 @@ for func in ${funcs}/*; do
   autoload -Uz "${func}"
 done
 
-
 # ----------------------------------------------------------------------------
 # CUSTOM MODULES
 #
@@ -40,12 +39,10 @@ _modules=(
 # XXX: extract to function
 for m in ${_modules[@]}; do
   file="${ZDOTDIR}/modules/${m}.zsh"
-  if [[ -a "${file}" ]]; then
+  if [[ -e "${file}" ]]; then
     source "${file}"
   fi
 done
-
-
 
 # ----------------------------------------------------------------------------
 # COLORS, COMPINIT & AUTOPAIR
@@ -53,13 +50,21 @@ done
 # Load tab completion and other setup, order is important
 # ----------------------------------------------------------------------------
 
-# Autopair needs to be initilized before compinit 
+# Autopair needs to be initilized before compinit
 autopair-init
 eval "$(dircolors ${ZDOTDIR}/.dircolors)"
 
-autoload -Uz compinit && \
-   compinit -C -d $XDG_CACHE_HOME/zcompdump
+autoload -Uz compinit &&
+  compinit -C -d $XDG_CACHE_HOME/zcompdump
 
 # FIX: VOLTA BELONGS TO THE NODE TOOLCHAIN AND NEEDS A NEW SPACE
 export VOLTA_HOME="$HOME/.local/package/volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/home/macke/.local/share/pnpm"
+case ":$PATH:" in
+*":$PNPM_HOME:"*) ;;
+*) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

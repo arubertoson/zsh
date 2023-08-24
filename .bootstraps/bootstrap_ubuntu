@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 
-sudo apt -y update && sudo apt -y upgrade && sudo apt install -y \
-    ripgrep \
-    fd-find \
-    fzf
+if _is_wsl; then
+    cd ~
+fi
+
+# Check if CUSTOM_SHELL_SETUP is set
+if [[ -n "$CUSTOM_SHELL_SETUP" ]]; then
+    sudo apt -y update && sudo apt -y upgrade && sudo apt install -y \
+        ripgrep \
+        fd-find \
+        fzf
+fi

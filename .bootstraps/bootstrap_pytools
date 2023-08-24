@@ -3,36 +3,33 @@
 # Global pointer to virtual environment storage
 export WORKON_HOME="${XDG_CACHE_HOME}/venvs"
 
-# ------------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------------
 # Pyenv
-# ------------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------------
 
-if [[ -z "${PYENV_LOADED}" ]];
-then
+if [[ -z "${PYENV_LOADED}" ]]; then
     export PYENV_ROOT="${XDG_APP_HOME}/pyenv"
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
-
-    echo "Setting up pyenv"
 
     # If we don't have pyenv available at this point we are missing it and need to
     # perform the install. The following block pulls down the necessary repos and
     # make the pyenv exec available on paht.
-    if (! command -v pyenv > /dev/null); then
-	echo "Pyenv is not installed, installing latest"
+    if (! command -v pyenv >/dev/null); then
+        echo "Pyenv is not installed, installing latest"
 
         if [ ! -d "${PYENV_ROOT}" ]; then
             git clone https://github.com/pyenv/pyenv.git ${PYENV_ROOT}
         fi
-        _git_pull ${PYENV_ROOT} > /dev/null
+        _git_pull ${PYENV_ROOT} >/dev/null
 
         # Latest
-        PYENV_INSTALL_LATEST=${PYENV_ROOT}/plugins/pyenv-install-latest 
+        PYENV_INSTALL_LATEST=${PYENV_ROOT}/plugins/pyenv-install-latest
         if [ ! -d "${PYENV_INSTALL_LATEST}" ]; then
             git clone https://github.com/momo-lab/pyenv-install-latest.git ${PYENV_INSTALL_LATEST}
         fi
         _git_pull ${PYENV_INSTALL_LATEST}
 
-        # Installing necessary packages to build python from source and if successful 
+        # Installing necessary packages to build python from source and if successful
         # we finalize the install by linking the pyenv executable
         $(dirname "$0")/bootstrap_python && ln -sf ${PYENV_ROOT}/bin/pyenv ${XDG_BIN_HOME}/pyenv
     fi
@@ -62,17 +59,15 @@ then
     export PYENV_LOADED=1
 fi
 
-# ------------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------------
 # Pipenv
-# ------------------------------------------------------------------------------ 
+# ------------------------------------------------------------------------------
 
-if [[ -z "${PIPENV_LOADED}" ]];
-then
+if [[ -z "${PIPENV_LOADED}" ]]; then
     export PIPENV_CACHE_DIR=${XDG_CACHE_HOME}
     export PIPENV_VENV_IN_PROJECT=1
 
-    if (! command pipenv &> /dev/null); 
-    then
+    if (! command pipenv &>/dev/null); then
         echo "pipenv is not installed"
     fi
 
