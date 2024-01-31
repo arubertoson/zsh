@@ -1,107 +1,38 @@
-#!/usr/bin/env zsh
+#!/bin/zsh
+#
+# This file, .zshenv, is the first file sourced by zsh for EACH shell, whether
+# it's interactive or not. This includes non-interactive sub-shells! So, put
+# as little in this file as possible, to avoid performance impact.
 
-# ----------------------------------------------------------------------------
-# Initial Setup
-# ----------------------------------------------------------------------------
+
 
 # disable globals rcs, we want control of what is in our environment
 unsetopt GLOBAL_RCS
 
-# ----------------------------------------------------------------------------
-# Defines runtime environment
-# ----------------------------------------------------------------------------
+# Disable global compinit: Optimizes zsh startup by skipping global 
+# autocompletion initialization. We are handling compinit ourselves.
+skip_global_compinit=1
 
-export _BASE_LOCALE='home'
-export _BASE_HOME="${HOME}/.local"
-export _DEV_HOME="${HOME}/dev"
+# Ensure XDG Base directory specification is respected
+HOME_LOCAL="${HOME}/.local"
 
-# Use XDG variables to set our environment
+# Set XDG (XDG Base Directory Specification) environment variables. In Ubuntu, as
+# in many Linux distributions, the XDG environment variables are not always 
+# explicitly set by default. 
 export XDG_CONFIG_HOME="${HOME}/.config"
 export XDG_CACHE_HOME="${HOME}/.cache"
-export XDG_BIN_HOME="${_BASE_HOME}/bin"
-export XDG_DATA_HOME="${_BASE_HOME}/share"
-export XDG_APP_HOME="${_BASE_HOME}/package"
+export XDG_DATA_HOME="${HOME_LOCAL}/share"
 
-# Move ZDOTDIR to .config to reduce dot file pollution
-export ZDOTDIR=$(realpath "$XDG_CONFIG_HOME/zsh")
-export ZSH_CACHE="$XDG_CACHE_HOME/zsh"
+# Extended XDG with some custom locations
+export XDG_BIN_HOME="${HOME_LOCAL}/bin"
+export XDG_APP_HOME="${HOME_LOCAL}/package"
+export XDG_DEV_HOME="${HOME}/dev"
+export XDG_WINDOWS_DEV_HOME="/mnt/c/Users/Macke/dev"
 
-export SHELL=$(command -v zsh)
-export LANG=${LANG:-en_US.UTF-8}
-# export PAGER="page -q 90000"
-# export MANPAGER='nvim +Man!'
-# export MANPAGER="page -C -e 'au User PageDisconnect sleep 100m|%y p|enew! |bd! #|pu p|set ft=man'"
+export EDITOR="nvim"
 
-if command -v "nvr" &>/dev/null && [ -n "${NVIM_LISTEN_ADDRESS}" ]; then
-    alias nvim=nvr -cc split --remote-wait +'set bufhidden=wipe'
-
-    export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-    export EDITOR="nvr -cc split --remote-wait +'set bufhidden=wipe'"
-else
-    # XXX: Currently not working as expected
-    export VISUAL=nvim
-    export EDITOR=nvim
-fi
-
-# ----------------------------------------------------------------------------
-# Custom Functions
-# ----------------------------------------------------------------------------
-
-function _drop_cache {
-    sudo su -c "sync; sudo echo 3 > /proc/sys/vm/drop_caches; sudo touch /root/drop_caches_last_run"
-}
-
-function _is_callable {
-    for cmd in "$@"; do
-        command -v "$cmd" >/dev/null || return 1
-    done
-}
-
-function _load_repo {
-    _get_repo "$1" "$2" && source "$2/$3" || echo >&2 "Failed to load $1"
-}
-
-function _get_repo {
-    local target=$1
-    local dest=$2
-    if [[ ! -d $dest ]]; then
-        url=https://github.com/$target
-        git clone --recursive "$url" "$dest" || return 1
-    fi
-}
-
-function _cache_clear {
-    command rm -rfv $XDG_CACHE_HOME/${SHELL##*/}/*
-}
-
-function _in_env() {
-    if [[ ":$2:" == *":$1:"* ]]; then
-        return 0
-    else
-        return 1
-    fi
-}
-
-function _appendenv() {
-    export $1="$(printenv $1):$2"
-}
-
-function _prependenv() {
-    export $1="$2:$(printenv $1)"
-}
-
-function _pathclean() {
-    export $1=$(printenv $1) | sed 's/:/\n/g' | uniq | tr "\n" ":"
-}
-
-function _git_pull() {
-    cd $1 && git pull && cd -
-}
-
-function _is_wsl() {
-    if grep -q 'microsoft' /proc/version; then
-        return 0 # True
-    else
-        return 1 # False
-    fi
-}
+# Tell zsh where to look for our dotfiles. By default, Zsh will look for 
+# dotfiles in $HOME (and find this file), but once $ZDOTDIR is defined, it will 
+# start looking in that dir instead.
+ZDOTDIR=$(realpath "${XDG_CONFIG_HOME}/zsh")
+ZSH_CACHE="${XDG_CACHE_HOME}/zsh"
