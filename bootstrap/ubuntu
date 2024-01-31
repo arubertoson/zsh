@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+
+sudo apt -y update && sudo apt -y upgrade
+
+# Basic setup for building python
+sudo apt -y update && sudo apt -y upgrade && sudo apt install -y \
+    build-essential \
+    libssl-dev \
+    zlib1g-dev \
+    libbz2-dev \
+    libreadline-dev \
+    libsqlite3-dev \
+    wget \
+    curl \
+    llvm \
+    libncurses5-dev \
+    libncursesw5-dev \
+    xz-utils \
+    tk-dev \
+    libffi-dev \
+    liblzma-dev \
+    git
+
+# Base utils
+sudo apt install -y \
+    ripgrep \
+    fd-find
+
+# datasette + sqlite-utils
+# nvim + win32yank.exe
+# setup rust pipeline
+# gh (github cli)
+# link ./config/wsl.conf to /etc/wsl.conf
