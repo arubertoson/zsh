@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+asdf plugin add python
+asdf plugin add lazygit
+asdf plugin add neovim
