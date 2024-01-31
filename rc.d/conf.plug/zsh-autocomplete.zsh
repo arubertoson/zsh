@@ -42,5 +42,3 @@ bindkey -M menuselect '\t' menu-complete "$terminfo[kcbt]" reverse-menu-complete
 # otherwise in the menu exits the menu. If you instead want to make Enter always
 #  submit the command line, use the following:
 bindkey -M menuselect '\r' .accept-line
-
-

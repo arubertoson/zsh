@@ -31,6 +31,25 @@ export XDG_WINDOWS_DEV_HOME="/mnt/c/Users/Macke/dev"
 
 export EDITOR="nvim"
 
+# Ensure that XDG directories exists and can be used by different
+# applications.
+directories=(
+    "$XDG_CONFIG_HOME"
+    "$XDG_CACHE_HOME"
+    "$XDG_DATA_HOME"
+    "$XDG_BIN_HOME"
+    "$XDG_APP_HOME"
+    "$XDG_DEV_HOME"
+)
+
+# Iterate through each directory and create it if it doesn't exist
+for dir in "${directories[@]}"; do
+    if [ ! -d "$dir" ]; then
+        echo "Creating directory: $dir"
+        mkdir -p "$dir"
+    fi
+done
+
 # Tell zsh where to look for our dotfiles. By default, Zsh will look for 
 # dotfiles in $HOME (and find this file), but once $ZDOTDIR is defined, it will 
 # start looking in that dir instead.

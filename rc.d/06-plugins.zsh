@@ -44,10 +44,8 @@ for p in $plugins; do
   znap source $p
 done
 
-
 # Additional completions
 znap fpath _asdf '< ~[asdf]/completions/_asdf'
-znap fpath _poetry 'poetry completions zsh'
 
 # `znap eval <name> '<command>'` is like `eval "$( <command> )"` but with
 # caching and compilation of <command>'s output, making it ~10 times faster.

@@ -4,7 +4,7 @@
 # our local bin.
 if ((! $+commands[fzf])); then
   ~[junegunn/fzf]/install --no-fish --no-bash --bin
-  ln -s ~[junegunn/fzf]/bin/fzf $XDG_BIN_HOME/fzf
+  ln -sf ~[junegunn/fzf]/bin/fzf $XDG_BIN_HOME/fzf
 fi
 
 
