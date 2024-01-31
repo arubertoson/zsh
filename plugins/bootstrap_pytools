@@ -7,6 +7,7 @@ export WORKON_HOME="${XDG_CACHE_HOME}/venvs"
 # Pyenv
 # ------------------------------------------------------------------------------
 
+PYENV_LOADED=1
 if [[ -z "${PYENV_LOADED}" ]]; then
     export PYENV_ROOT="${XDG_APP_HOME}/pyenv"
     export PYENV_VIRTUALENV_DISABLE_PROMPT=1
@@ -63,6 +64,7 @@ fi
 # Pipenv
 # ------------------------------------------------------------------------------
 
+PIPENV_LOADED=1
 if [[ -z "${PIPENV_LOADED}" ]]; then
     export PIPENV_CACHE_DIR=${XDG_CACHE_HOME}
     export PIPENV_VENV_IN_PROJECT=1
