@@ -53,7 +53,7 @@ alias zln='zmv -Lv'
 # Set $PAGER if it hasn't been set yet. We need it below.
 # `:` is a builtin command that does nothing. We use it here to stop Zsh from
 # evaluating the value of our $expansion as a command.
-: ${PAGER:=less}
+: ${PAGER:=bat}
 
 # Associate file name .extensions with programs to open them.
 # This lets you open a file just by typing its name and pressing enter.

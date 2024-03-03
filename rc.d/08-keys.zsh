@@ -61,3 +61,7 @@ bindkey '^[w' where-is
 
 bindkey -M viins '^a' beginning-of-line
 bindkey -M viins '^d' push-line-or-edit
+
+# Unbind vicmd keys
+bindkey -r -M vicmd 'k'
+bindkey -r -M vicmd 'N'
