@@ -1,0 +1,57 @@
+#!/usr/bin/env bash
+
+# Define plugin name and version
+version="1.7.1"
+app="timewarrior"
+repo="https://github.com/GothenburgBitFactory/timewarrior"
+file="timew-${version}.tar.gz"
+url="${repo}/releases/download/v${version}/${file}"
+
+location="$XDG_APP_HOME/${app}/${version}"
+archive="$XDG_APP_HOME/${app}/.archive"
+
+# Check if the executable already exists in the installation directory
+if [ -x "$location/bin/timew" ]; then
+    echo "Executable already exists in installation directory. Skipping build."
+else
+    # Create necessary directories
+    mkdir -p "$location"
+    mkdir -p "$archive"
+
+    # Check if the archive file exists
+    if [ ! -f "$archive/$file" ]; then
+        # Download tar to archive
+        wget -P "$archive" "$url"
+
+        # Check if wget was successful
+        if [ $? -ne 0 ]; then
+            echo "Failed to download $url"
+            exit 1
+        fi
+    else
+        echo "Archive file already exists, skipping download."
+    fi
+
+    build_dir="${location}/build"
+    mkdir -p "$build_dir"
+    tar -xf "$archive/$file" -C "$build_dir" --strip-components=1
+
+    cd "$build_dir" || exit
+
+    # Build and install using CMake
+    cmake -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="$location" .
+    cmake --build . --config Release --target install
+
+    # Check if the build was successful
+    if [ $? -eq 0 ]; then
+        # Clean up build directory
+        rm -rf "$build_dir"
+        echo "Build successful. Cleaned up build directory."
+    else
+        echo "Build failed. Build directory not cleaned up."
+        exit 1
+    fi
+fi
+
+# Setup links
+ln -sf "$location/bin/timew" "$XDG_BIN_HOME/timew"

@@ -19,28 +19,9 @@ sudo apt -y update && sudo apt -y upgrade && sudo apt install -y \
     llvm \
     libffi-dev \
     liblzma-dev
-    
-
-# Base utils
-sudo apt install -y \
-    git \
-    wget \
-    curl \
-    golang-go \
-    ripgrep \
-    fd-find
 
 # Link wsl config to default location
 sudo ln -sf $SCRIPT_DIR/config/wsl.conf /etc/wsl.conf
 
 # Source bootstrap scripts
-. $SCRIPT_DIR/zsh
-
-# datasette + sqlite-utils
-# setup rust pipeline
-# gh (github cli)
-
-# asdf
-# lazygit
-# neovim
-# rust
+. $SCRIPT_DIR/setup-zsh
