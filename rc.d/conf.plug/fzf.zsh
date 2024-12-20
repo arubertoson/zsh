@@ -22,7 +22,7 @@ fzf-echo-env() {
 }
 
 fzf-select-job() {
-  job=$(jobs | fzf | rg '[0-9]' -o)
+  job=$(jobs | FZF_DEFAULT_OPTS=${FZF_DEFAULT_OPTS} fzf | rg '[0-9]' -o)
   BUFFER="fg %${job}"
 
   zle accept-line
@@ -30,7 +30,7 @@ fzf-select-job() {
 }
 
 fzf-change-to-dev-project() {
-  local cmd="$FDFIND_COMMAND -t d -HI -g '**/.git' $XDG_DEV_HOME --exec dirname {}"
+  local cmd="$FDFIND_COMMAND -HI -t d '^.git$' $XDG_DEV_HOME --prune --exec dirname {}"
   local dir=$(eval $cmd | FZF_DEFAULT_OPTS=${FZF_DEFAULT_OPTS} fzf)
   if [ -z ${dir} ]; then
     zle reset-prompt
@@ -45,21 +45,18 @@ fzf-change-to-dev-project() {
 # Expose zle functions
 zle -N fzf-echo-env
 zle -N fzf-select-job
-zle -N fzf-insert-history
-zle -N fzf-change-directory
 zle -N fzf-change-to-dev-project
 
 # fzf keybinds
 bindkey -M vicmd '^@p' fzf-echo-env
 bindkey -M vicmd '^@j' fzf-select-job
-bindkey -M vicmd '^@t' fzf-change-directory
 bindkey -M vicmd '^@\\' fzf-change-to-dev-project
 
 # Add completion & base functions from fzf/shell directory
 source ~[junegunn/fzf]/shell/key-bindings.zsh
 znap fpath _fzf '< ~[junegunn/fzf]/shell/completion.zsh'
 
-FZF_DEFAULT_OPTS="--height -40% --reverse --scheme=path --bind=ctrl-z:ignore ${FZF_DEFAULT_OPTS-} ${FZF_CTRL_T_OPTS-}"
+FZF_DEFAULT_OPTS="--height -40% --reverse --scheme=path --bind=ctrl-z:ignore ${FZF_DEFAULT_OPTS-}"
 
 if (($+commands[fd])); then
   export FZF_CTRL_T_COMMAND="$FDFIND_COMMAND . --hidden"
