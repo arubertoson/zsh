@@ -35,8 +35,14 @@ $0() {
   # process run asynchronously and non-blocking.
   exec {fd}< <(
     if is_inside_git_dir; then
-    # we create a second output for the window title
-      print -r -- "repo:$(basename "$(git rev-parse --show-toplevel)")[$(git rev-parse --abbrev-ref HEAD)]"
+      # we create a second output for the window title
+      if git rev-parse --quiet --verify HEAD > /dev/null; then
+        # The repository has commits, so it's safe to fetch the branch name.
+        print -r -- "repo:$(basename "$(git rev-parse --show-toplevel)")[$(git rev-parse --abbrev-ref HEAD)]"
+      else
+        # The repository is empty, so just use the repository name.
+        print -r -- "repo:$(basename "$(git rev-parse --show-toplevel)")"
+      fi
       
       vcs_info
       print -r -- $vcs_info_msg_0_

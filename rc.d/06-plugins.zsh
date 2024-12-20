@@ -6,8 +6,6 @@
 # For more info on each plugin, visit its repo at github.com/<plugin>
 # -a sets the variable's type to array.
 local -a plugins=(
-    marlonrichert/zsh-autocomplete      # Real-time type-ahead completion
-    marlonrichert/zsh-hist              # Edit history from the command line.
     marlonrichert/zcolors               # Colors for completions and Git
 
     hlissner/zsh-autopair               # Auto-pair quotes and parenthesis
@@ -16,6 +14,7 @@ local -a plugins=(
     wfxr/forgit                         # Git utilities
     junegunn/fzf                        # Command-line fuzzy finder
 
+    zsh-users/zsh-completions 		# Inline suggestions
     zsh-users/zsh-autosuggestions       # Inline suggestions
     zsh-users/zsh-syntax-highlighting   # Command-line syntax highlighting
 )
@@ -33,7 +32,7 @@ for p in $plugins; do
   # Check if the file exists and source it if it does
   if [[ -f $file_path ]]; then
       source $file_path
-  fi  
+  fi
 
   # Since fzf is not zsh plugin we need to handle it with more care,
   # we're only calling the plug conf file and hanlding the setup there.
@@ -43,9 +42,6 @@ for p in $plugins; do
 
   znap source $p
 done
-
-# Additional completions
-znap fpath _asdf '< ~[asdf]/completions/_asdf'
 
 # `znap eval <name> '<command>'` is like `eval "$( <command> )"` but with
 # caching and compilation of <command>'s output, making it ~10 times faster.

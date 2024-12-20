@@ -62,6 +62,9 @@ bindkey '^[w' where-is
 bindkey -M viins '^a' beginning-of-line
 bindkey -M viins '^d' push-line-or-edit
 
+bindkey '^p' history-search-backward
+bindkey '^n' history-search-forward
+
 # Unbind vicmd keys
 bindkey -r -M vicmd 'k'
 bindkey -r -M vicmd 'N'
