@@ -62,6 +62,62 @@ alias -s {css,gradle,html,js,json,md,patch,properties,txt,xml,yml}=$PAGER
 alias -s gz='gzip -l'
 alias -s {log,out}='tail -F'
 
+llm_with_editor() {
+    local system_prompt="$1"
+    shift
+    
+    local input
+    local temp_file
+
+    # Check if we have stdin
+    if [[ ! -t 0 ]]; then
+        # Read from pipe
+        input=$(cat)
+    elif [[ $# -eq 0 ]]; then
+        # No arguments, use editor
+        temp_file=$(mktemp)
+        ${EDITOR:-vim} "$temp_file"
+        
+        if [[ ! -s "$temp_file" ]]; then
+            echo "No input provided"
+            rm "$temp_file"
+            return 1
+        fi
+        
+        input=$(cat "$temp_file")
+        /bin/rm "$temp_file"
+    else
+        input="$*"
+    fi
+    
+    llm -m "gpt-4.1-nano" -s "$system_prompt" "$input" | glow
+}
+
+# Now your specific functions become very simple:
+trns() {
+    if [[ $# -lt 1 ]]; then
+        echo "Usage: trns <target_language> [text...]"
+        echo "   or: trns <target_language>  # opens editor"
+        echo "   or: echo 'text' | trns <target_language>"
+        return 1
+    fi
+    
+    local target_lang="$1"
+    shift
+    
+    local prompt="Translate the input language to $target_lang, 
+keep the tone and only respond with the translation, 
+do not elaborate."
+    
+    llm_with_editor "$prompt" "$@"
+}
+
+q() {
+	local prompt="Write a short, concise, and clear answer to 
+the question. Do not elaborate."
+
+	llm_with_editor "$prompt" "$@"
+}
 
 # Use `< file` to quickly view the contents of any text file.
 READNULLCMD=$PAGER  # Set the program to use for this.

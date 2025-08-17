@@ -27,3 +27,5 @@
 # "Double quotes" ensures that empty arguments '' are preserved.
 # It's a good practice to pass "$@" by default. You'd be surprised at all the
 # bugs you avoid this way.
+#
+eval "$(~/.local/bin/mise activate zsh)"

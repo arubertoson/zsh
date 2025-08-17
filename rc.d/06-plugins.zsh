@@ -10,7 +10,7 @@ local -a plugins=(
 
     hlissner/zsh-autopair               # Auto-pair quotes and parenthesis
     jeffreytse/zsh-vi-mode              # Vi mode
-    asdf-vm/asdf                        # Manage multiple runtime versions of the same language
+    # asdf-vm/asdf                        # Manage multiple runtime versions of the same language
     wfxr/forgit                         # Git utilities
     junegunn/fzf                        # Command-line fuzzy finder
 
