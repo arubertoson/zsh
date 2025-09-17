@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+# bootstrap.d/20-mise
+
+set -euo pipefail
+
+have() { command -v "$1" >/dev/null 2>&1; }
+
+if ! have mise; then
+  curl -fsSL https://mise.jdx.dev/install.sh | sh
+  export PATH="$HOME/.local/bin:$PATH"
+fi
+
+# Ensure shell activation for zsh
+RC="${ZDOTDIR:-$HOME}/.zshrc"
+ACT='eval "$(mise activate zsh)"'
+grep -Fq "$ACT" "$RC" 2>/dev/null || printf '\n%s\n' "$ACT" >> "$RC"
+
+# Symlink global config
+REPO_ROOT="$(dirname ${BASH_SOURCE[0]})/dotfiles"
+REPO_MISE_TOML="$REPO_ROOT/dotfiles/mise.toml"
+if [ -f "$REPO_MISE_TOML" ]; then
+    ln -sfn -- "$REPO_MISE_TOML" "$XDG_CONFIG_HOME/mise/config.toml"
+fi
+
+echo "[20-mise] OK (mise installed + config linked; no tools installed here)"
+

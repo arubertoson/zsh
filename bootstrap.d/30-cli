@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+# bootstrap.d/30-cli
+
+set -euo pipefail
+
+have() { command -v "$1" >/dev/null 2>&1; }
+
+if ! have mise; then
+  echo "[30-cli] mise not found, Did 20-mise run?" >&2
+  exit 1
+fi
+
+# Activate mise in this shell so PATH is correct
+eval "$(mise activate bash)"
+
+# Single source of truth install from ~/.mise.toml
+if [ -f "$HOME/.mise.toml" ]; then
+  mise trust "$HOME/.mise.toml" || true
+  mise install -y
+
+  # Optional: align already-installed tools to the pinned versions
+  mise upgrade || true
+fi
+
+# Node corepack only if Node exists (no global -g nonsense)
+if command -v node >/dev/null 2>&1; then
+  corepack enable || true
+fi
+
+echo "[30-cli] OK (tools installed via mise)"
+

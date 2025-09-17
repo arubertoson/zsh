@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+# bootstrap.d/50-nvim
+# Idempotent: clone/pull and symlink to ~/.config/nvim
+
+set -euo pipefail
+
+echo "[50-nvim] Setting up neovim"
+
+OWNER="arubertoson"
+REPO="nvim"
+GIT_SSH_URL="git@github.com:${OWNER}/${REPO}.git"
+
+# paths
+DEV_ROOT="${XDG_DEV_HOME:-$HOME/dev}"
+TARGET_ROOT="${DEV_ROOT%/}/home/github.com/${OWNER}"
+TARGET_DIR="${TARGET_ROOT%/}/${REPO}"
+NVIM_SYMLINK="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
+
+mkdir -p "$TARGET_ROOT"
+if [ ! -d "$TARGET_DIR" ]; then
+  echo "[50-nvim] cloning $GIT_SSH_URL -> $TARGET_DIR"
+  git clone "$GIT_SSH_URL" "$TARGET_DIR"
+fi
+
+# symlink to ~/.config/nvim
+mkdir -p "$(dirname "$NVIM_SYMLINK")"
+
+ln -sfn -- "$TARGET_DIR" "$NVIM_SYMLINK"
+echo "[50-nvim] created symlink: $NVIM_SYMLINK -> $TARGET_DIR"
+

@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# 40-scripts
+
+set -euo pipefail
+
+ROOT="$(dirname ${BASH_SOURCE[0]})"
+SCRIPT_DIR="$ROOT/scripts"
+
+log() { printf "\033[1;36m[40-scripts]\033[0m %s\n" "$*"; }
+
+log "moving scripts to path location"
+for script in "$SCRIPT_DIR"/*; do
+	real=$(realpath $script)
+	log "linking $real -> $XDG_BIN_HOME"
+	ln -sfn -- $(realpath $script) $XDG_BIN_HOME/
+done
+
+log "[40-scripts] OK"
+

@@ -1,0 +1,38 @@
+[includeIf "gitdir:~/dev/home/"]
+    path = ~/dev/home/.gitconfig
+
+[includeIf "gitdir:~dev/work/"]
+    path = ~/dev/work/.gitconfig
+
+[core]
+    pager = delta
+    editor = nvim
+
+[interactive]
+    diffFilter = delta --color-only
+
+[delta]
+    navigate = true    # Use n/N to jump between diff sections
+    light = false      # Set to true if using a light terminal theme
+    side-by-side = true  # Enable side-by-side diffs
+    line-numbers = true  # Show line numbers
+    syntax-theme = Dracula  # Matches Neovim's aesthetic; adjust as needed
+
+[merge]
+    conflictstyle = diff3
+
+[diff]
+    colorMoved = default
+
+[alias]
+    st = status --short --branch
+    co = checkout
+    br = branch
+    ci = commit
+    cm = commit -m
+    lg = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    amend = commit --amend --no-edit
+    unstage = reset HEAD --
+    fixup = commit --fixup
+    rebase-i = rebase -i
+    pushf = push --force-with-lease

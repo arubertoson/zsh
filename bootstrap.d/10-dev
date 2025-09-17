@@ -1,0 +1,19 @@
+# bootstrap.d/10-dev
+#!/usr/bin/env bash
+set -euo pipefail
+
+export DEBIAN_FRONTEND=noninteractive
+
+have() { command -v "$1" >/dev/null 2>&1; }
+
+sudo apt-get update -y
+
+# Core build toolchain and libs you actually link against
+sudo apt-get install -y \
+  build-essential cmake ninja-build pkg-config \
+  curl git ca-certificates zip unzip tar \
+  libssl-dev zlib1g-dev \
+  rsync aria2
+
+echo "[10-dev] OK"
+

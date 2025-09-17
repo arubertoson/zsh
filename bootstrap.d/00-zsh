@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+# bootstrap.d/00-zsh
+
+set -euo pipefail
+
+REPO_ROOT="$(dirname $(dirname ${BASH_SOURCE[0]}))"
+ZSHENV_SOURCE="${REPO_ROOT}/.zshenv"
+ZSHENV_TARGET="${HOME}/.zshenv"
+
+[ -f "$ZSHENV_SOURCE" ] || { echo "[FAIL] ${ZSHENV_SOURCE} not found"; exit 1; }
+
+sudo apt-get update -y
+sudo apt-get install -y zsh
+
+ZSH_PATH="$(command -v zsh)"
+[ -n "$ZSH_PATH" ] || { echo "[FAIL] zsh not found after install"; exit 1; }
+
+# Link .zshenv (force), ensure /etc/shells and set as default
+ln -sfn -- "$ZSHENV_SOURCE" "$ZSHENV_TARGET"
+
+# Ensure /etc/shells and set as default
+if [ -r /etc/shells ] && ! grep -qx "$ZSH_PATH" /etc/shells; then
+  echo "$ZSH_PATH" | sudo tee -a /etc/shells >/dev/null
+fi
+
+sudo chsh -s "$ZSH_PATH" "${SUDO_USER:-$USER}"
+
+echo "[00-zsh] OK zsh bootstrapped. Start a new terminal or: exec $ZSH_PATH -l"
