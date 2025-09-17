@@ -8,6 +8,7 @@ node   = "lts"
 python = "3.12"
 go     = "1.23"
 zig    = "0.13.0"
+rust   = "stable"
 
 # CLU utils
 "ubi:chmln/sd"		      = "1.0.0"
