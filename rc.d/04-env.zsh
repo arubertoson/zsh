@@ -16,7 +16,7 @@ export ZK_NOTEBOOK_DIR=~/notes
 path=(
     $path
     ~/.local/bin
-    /mnt/c/Users/AlbeMar/scoop/apps/win32yank/current
+    /mnt/c/Users/macke/AppData/Local/Microsoft/WinGet/Packages/equalsraf.win32yank_Microsoft.Winget.Source_8wekyb3d8bbwe
 )
 
 # Add your functions to your $fpath, so you can autoload them.

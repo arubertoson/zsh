@@ -1,10 +1,7 @@
 #!/bin/zsh
-#
 # This file, .zshenv, is the first file sourced by zsh for EACH shell, whether
 # it's interactive or not. This includes non-interactive sub-shells! So, put
 # as little in this file as possible, to avoid performance impact.
-
-
 
 # disable globals rcs, we want control of what is in our environment
 unsetopt GLOBAL_RCS
@@ -55,3 +52,10 @@ done
 # start looking in that dir instead.
 ZDOTDIR=$(realpath "${XDG_CONFIG_HOME}/zsh")
 ZSH_CACHE="${XDG_CACHE_HOME}/zsh"
+
+# Global environment varaibles
+if [[ -f ~/.env ]]; then
+  set -a
+  source ~/.env
+  set +a
+fi

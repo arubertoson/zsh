@@ -9,4 +9,4 @@ RPS1=   # Clear the right side of the prompt; see next section.
 zle -I
 
 # -P flag parses prompt escape codes.
-print -P "\n%F{12}%~%f"   # 12 is bright blue.
+print -P "%F{12}%~%f"   # 12 is bright blue.

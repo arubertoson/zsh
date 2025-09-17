@@ -8,11 +8,11 @@
 local -a plugins=(
     marlonrichert/zcolors               # Colors for completions and Git
 
-    hlissner/zsh-autopair               # Auto-pair quotes and parenthesis
     jeffreytse/zsh-vi-mode              # Vi mode
-    # asdf-vm/asdf                        # Manage multiple runtime versions of the same language
+    hlissner/zsh-autopair               # Auto-pair quotes and parenthesis
     wfxr/forgit                         # Git utilities
     junegunn/fzf                        # Command-line fuzzy finder
+    adrieankhisbe/zsh-quiet-accept-line # run comands without outputting to the prompt
 
     zsh-users/zsh-completions 		# Inline suggestions
     zsh-users/zsh-autosuggestions       # Inline suggestions
