@@ -1,5 +1,0 @@
-#!/usr/bin/env bash
-echo $(dirname $(pwd))
-echo $(dirname $BASH_SOURCE)
-echo "$(dirname $(realpath $BASH_SOURCE))/path"
-echo $(realpath $BASH_SOURCE)

@@ -1,8 +1,8 @@
 [includeIf "gitdir:~/dev/home/"]
-    path = ~/dev/home/.gitconfig
+    path = ~/.config/git/home
 
 [includeIf "gitdir:~dev/work/"]
-    path = ~/dev/work/.gitconfig
+    path = ~/.config/git/work
 
 [core]
     pager = delta

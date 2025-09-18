@@ -10,6 +10,8 @@ go     = "1.23"
 zig    = "0.13.0"
 rust   = "stable"
 
+bun = "1.2.22"
+
 # CLU utils
 "ubi:chmln/sd"		      = "1.0.0"
 "ubi:x-motemen/ghq"	      = "1.8.0"
